@@ -14,4 +14,5 @@ module.exports = (app) => {
 
     // Delete a user with usereId
     app.delete('/usuarios/:usuarioId', usuarios.borrar);
+    
 }
