@@ -15,10 +15,10 @@ productController.listaProductos = (req, res) => {
 
 productController.crearProducto = (req, res) => {
 
-   // connection.query(sql, (err, result) => {
-    //     if (err) throw err;
-    //     res.send('producto creado')
-    // })
+   connection.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send('producto creado')
+    })
 }
 
 
@@ -36,21 +36,20 @@ productController.eliminarProducto = (req, res) => {
 
 
 productController.actualizarProducto = (req, res) => {
-//     let producto_id = req.params.producto_id;
-//     const { nombre_producto, tipo, peso, stock, activo, fecha_creacion, coleccion_id } = req.body;
-//    // let image_product = req.file.filename;
-//     let codigo_producto = sha1(req.body.codigo_producto)
-//     let sql = `UPDATE producto SET nombre='${nombre}',tipo_producto='${tipo_producto}',
-//     peso='${peso}',stock='${stock}',activo='${activo}'fecha_creacion='${fecha_creacion}', coleccion_id='${coleccion_id}'
-//      WHERE producto_id=${producto_id}`;
+    let producto_id = req.params.producto_id;
+    const { nombre_producto, tipo, codigo_barras,peso, stock, deleted, fecha_creacion} = req.body;
+   
+    let codigo_producto = sha1(req.body.codigo_producto)
+    let sql = `UPDATE producto SET nombre_producto='${nombre_producto}',tipo='${tipo}', codigo_barras='${codigo_barras},
+    peso='${peso}',stock='${stock}',deleted='${deleted}' ,fecha_creacion='${fecha_creacion}'
+     WHERE producto_id=${producto_id}`;
 
-//     connection.query(sql, (err, result) => {
-//         if (err) throw err;
-//         res.send('producto actualizado');
+    connection.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send('producto actualizado');
 
+})
 }
-
-
 
 
 module.exports = productController;
