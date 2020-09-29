@@ -30,7 +30,7 @@ app.use('/cliente', clienteRouter);
 app.use('/coleccion', coleccionRouter);
 app.use('/pedidos', pedidosRouter);
 app.use('/product', productRouter);
-app.use('/usuario', usuarioRouter);
+app.use('/usuarios', usuarioRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

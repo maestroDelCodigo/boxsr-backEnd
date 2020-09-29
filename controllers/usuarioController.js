@@ -1,99 +1,120 @@
 let connection = require('../config/db.js')
 let sha1 = require('sha1');
+const { response } = require('../app.js');
+const { validationResult } = require('express-validator');
 
 usuarioController = {};
 
 
-
-
 usuarioController.crear=(req,res)=>{
-    // Validate request
-    if(!req.body.content) {
-        return res.status(400).send({
-            message: "El contenido no puede estar vacio"
-        });
-    }
+      
+    const errors = validationResult(req);
+  
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }    
 
-//TODO: INSERT INTO 
+    let usuario_id = req.body.usuario_id
+    let nombre = req.body.nombre
+    let apellidos = req.body.apellidos
+    let email = req.body.email
+    let fecha_creacion = req.body.fecha_creacion
+    let registrado = req.body.registrado
+    let suscriptor = req.body.suscriptor
+    let password = req.body.password
+    let rol = req.body.rol
+    let deleted = req.body.deleted
+    let fecha_nacimiento = req.body.fecha_nacimiento
 
-// let name_phone = req.body.name_phone
-// let number_phone = req.body.number_phone
-// let color_phone = req.body.color_phone
-// let size_phone = req.body.size_phone
-// let resolution = req.body.resolution
 
-// //creo la query
-// let sql = `INSERT INTO phone (name_phone,number_phone,color_phone,size_phone,resolution) VALUES
+    if (!fecha_creacion){
+        fecha_creacion = Date.now();
+    } 
+
+    if (!registrado){
+        registrado = 1;
+    } 
     
-//     ('${name_phone}','${number_phone}','${color_phone}', '${size_phone}', '${resolution}')`;
+    if (!deleted){
+        deleted = 0;
+    }    
 
-// //ejecuto la query
-// connection.query(sql, (err, result) => {
-//     if (err) throw err;
+    let sql = `INSERT INTO usuario(usuario_id, nombre, apellidos, email,fecha_creacion, registrado, suscriptor, password, rol, deleted,fecha_nacimiento) VALUES ('${usuario_id}','${nombre}', '${apellidos}','${email}', '${fecha_creacion}', '${registrado}', '${suscriptor}', '${password}', '${rol}', '${deleted}', '${fecha_nacimiento}')`;
 
-//     res.send('ok')
-// })
-
-    res.send('ok');
+    connection.query(sql, (err, result) => {
+        
+        if (err) {
+            res.status(500).send({
+                message:  err.message//"Error al insertar en base de datos"
+            });
+        }        
+        //envio un json como respuesta
+        res.json(result);
+    })
 };
 
 usuarioController.lista=(req,res)=>{
 
-    // let sql = `SELECT * FROM usuarios`;
+    let sql = `SELECT * FROM usuario where deleted <> 1`;
 
-    // connection.query(sql, (err, result) => {
-    //     if (err) throw err;
-    //     res.json(result)
-    // })
-    
-    const usuarios = [{
-        nombre: 'paco',
-        apellido: 'jaime'
-    },
-    {
-        nombre: 'noe',
-        apellido: 'sanz'
-    }
-]    
-
-    res.json(usuarios);
+    connection.query(sql, (err, result) => {
+        if (err) {
+            res.status(500).send({
+                message: err.message
+            });
+        }        
+        //envio un json como respuesta
+        res.json(result);
+    })    
 };
 
 usuarioController.buscarUsuario=(req,res)=>{
-
     
-    // let sql = `SELECT * from usuarios where id = req.params.usuarioId`;
+    let sql = `SELECT * from usuario where usuario_id = ${req.params.usuarioId} and deleted <> 1`;
 
-    // connection.query(sql, (err, result) => {
-    //     if (err) throw err;
-    //     res.json(result)
-    // })
-
-
-    res.send(req.params.usuarioId);
-
-
-
+    connection.query(sql, (err, result) => {
+        if (err) {
+            res.status(500).send({
+                message: err.message
+            });
+        }        
+        //envio un json como respuesta
+        res.json(result);
+    });  
 };
 
 usuarioController.modificar=(req,res)=>{
 
-    // let id_phone = req.params.id_phone;
+    const errors = validationResult(req);
+  
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }    
 
-    // let name_phone = req.body.name_phone
-    // let number_phone = req.body.number_phone
-    // let color_phone = req.body.color_phone
-    // let size_phone = req.body.size_phone
-    // let resolution = req.body.resolution
+    let usuario_id = req.params.usuarioId
+    let nombre = req.body.nombre
+    let apellidos = req.body.apellidos
+    let email = req.body.email
+    let fecha_creacion = req.body.fecha_creacion
+    let registrado = req.body.registrado
+    let suscriptor = req.body.suscriptor
+    let password = req.body.password
+    let rol = req.body.rol
+    let deleted = req.body.deleted
+    let fecha_nacimiento = req.body.fecha_nacimiento
 
-    // let sql = `UPDATE phone SET name_phone = '${name_phone}', 
-    // number_phone= '${number_phone}', color_phone= '${color_phone}',
-    // size_phone= '${size_phone}',resolution= '${resolution}' WHERE id_phone = ${id_phone}`;
+    let sql = `UPDATE usuario SET nombre = '${nombre}', apellidos = '${apellidos}', email = '${email}' ,fecha_creacion = '${fecha_creacion}', registrado ='${registrado}', suscriptor = '${suscriptor}' , password = '${password}', rol ='${rol}' , deleted = '${deleted}' ,fecha_nacimiento = '${fecha_nacimiento}'
+    WHERE usuario_id = ${usuario_id} and deleted <> 1`;
 
-    // connection.query(sql, (err, result) => {
-    //     if (err) throw err;
-    //     res.json(result)
-    // })
+    connection.query(sql, (err, result) => {
+        if (err) {
+            res.status(500).send({
+                message: err.message
+            });
+        }        
+        //envio un json como respuesta
+        res.json(result);
+    })    
 
 };
 
@@ -101,15 +122,32 @@ usuarioController.borrar=(req,res)=>{
 
     let idUsuario = req.params.usuarioId;
 
-    // let sql = `DELETE FROM phone WHERE id_phone = ${id_phone}`;
-    // //ejecutamos la query para eliminar
+    // let sql = `DELETE FROM usuario WHERE usuario_id = ${idUsuario}`;
+    
     // connection.query(sql, (err, result) => {
-    //     if (err) throw err;
-    //     res.send('Delete phone');
-    // })
+    //     if (err) {
+    //         res.status(500).send({
+    //             message: err.message
+    //         });
+    //     }        
+    //     //envio un json como respuesta
+    //     res.json(result);
+    // });  
+    let deleted = 1;
 
-    res.send('Delete phone');
-};
+    let sql = `UPDATE usuario SET deleted = '${deleted}'  WHERE usuario_id = ${idUsuario}`;
+
+    connection.query(sql, (err, result) => {
+        if (err) {
+            res.status(500).send({
+                message: err.message
+            });
+        }        
+        //envio un json como respuesta
+        res.json(result);
+    })    
+}
+
 
 
 module.exports = usuarioController;
