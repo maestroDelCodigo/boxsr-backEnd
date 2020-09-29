@@ -13,3 +13,8 @@ exports.crearUsuario = [
 exports.modificarUsuario = [  
     check('email').notEmpty().isEmail(),    
 ];
+
+exports.loginUsuario = [
+    check('email').notEmpty().isEmail(),
+    check('password').notEmpty()
+];

@@ -148,6 +148,27 @@ usuarioController.borrar=(req,res)=>{
     })    
 }
 
+usuarioController.login=(req,res)=>{
 
+    const errors = validationResult(req);
+  
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }    
 
+    let email = req.body.email;
+    let password = req.body.password
+
+    let sql = `SELECT * from usuario where email = '${email}' and password = '${password}' and deleted <> 1`;
+
+    connection.query(sql, (err, result) => {
+        if (err) {
+            res.status(500).send({
+                message: err.message
+            });
+        }        
+        //envio un json como respuesta
+        res.json(result);
+    }) 
+}   
 module.exports = usuarioController;

@@ -4,6 +4,8 @@ const validaciones = require('../utils/userValidation');
 
 const usuarioController = require('../controllers/usuarioController');
     
+    router.post('/login', validaciones.loginUsuario, usuarioController.login);
+
     // Create a new user
     router.post('/', validaciones.crearUsuario, usuarioController.crear);
 
