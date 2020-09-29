@@ -1,3 +1,8 @@
+
+const connection = require('../../config/db');
+let sha1 = require('sha1');
+
+
 exports.crear=(req,res)=>{
     // Validate request
     if(!req.body.content) {

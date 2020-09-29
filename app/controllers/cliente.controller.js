@@ -1,3 +1,4 @@
+
 exports.crear=(req,res)=>{
     // Validate request
     if(!req.body.content) {
