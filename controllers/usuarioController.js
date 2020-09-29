@@ -1,5 +1,12 @@
+let connection = require('../config/db.js')
+let sha1 = require('sha1');
 
-exports.crear=(req,res)=>{
+usuarioController = {};
+
+
+
+
+usuarioController.crear=(req,res)=>{
     // Validate request
     if(!req.body.content) {
         return res.status(400).send({
@@ -30,26 +37,29 @@ exports.crear=(req,res)=>{
     res.send('ok');
 };
 
-exports.lista=(req,res)=>{
+usuarioController.lista=(req,res)=>{
 
-    // let sql = `SELECT * FROM cliente`;
+    // let sql = `SELECT * FROM usuarios`;
 
     // connection.query(sql, (err, result) => {
     //     if (err) throw err;
     //     res.json(result)
     // })
     
-    const cliente = [{
+    const usuarios = [{
         nombre: 'paco',
         apellido: 'jaime'
     },
- 
+    {
+        nombre: 'noe',
+        apellido: 'sanz'
+    }
 ]    
 
-    res.json(cliente);
+    res.json(usuarios);
 };
 
-exports.buscarCliente=(req,res)=>{
+usuarioController.buscarUsuario=(req,res)=>{
 
     
     // let sql = `SELECT * from usuarios where id = req.params.usuarioId`;
@@ -60,22 +70,13 @@ exports.buscarCliente=(req,res)=>{
     // })
 
 
-    res.send(req.params.clienteId);
+    res.send(req.params.usuarioId);
 
 
 
 };
 
-exports.modificar=(req,res)=>{
-
-    const cliente = {
-        nombre : req.body.name,
-        email : req.body.email,
-    }
-
-
-    res.send(cliente);
-
+usuarioController.modificar=(req,res)=>{
 
     // let id_phone = req.params.id_phone;
 
@@ -96,9 +97,9 @@ exports.modificar=(req,res)=>{
 
 };
 
-exports.borrar=(req,res)=>{
+usuarioController.borrar=(req,res)=>{
 
-    let idCliente = req.params.clienteId;
+    let idUsuario = req.params.usuarioId;
 
     // let sql = `DELETE FROM phone WHERE id_phone = ${id_phone}`;
     // //ejecutamos la query para eliminar
@@ -107,5 +108,8 @@ exports.borrar=(req,res)=>{
     //     res.send('Delete phone');
     // })
 
-    res.send('Delete cliente');
+    res.send('Delete phone');
 };
+
+
+module.exports = usuarioController;

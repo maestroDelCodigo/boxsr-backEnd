@@ -1,5 +1,9 @@
+let connection = require('../config/db.js')
+let sha1 = require('sha1');
 
-exports.crear=(req,res)=>{
+clienteController = {};
+
+clienteController.crear=(req,res)=>{
     // Validate request
     if(!req.body.content) {
         return res.status(400).send({
@@ -30,7 +34,7 @@ exports.crear=(req,res)=>{
     res.send('ok');
 };
 
-exports.lista=(req,res)=>{
+clienteController.lista=(req,res)=>{
 
     // let sql = `SELECT * FROM cliente`;
 
@@ -49,7 +53,7 @@ exports.lista=(req,res)=>{
     res.json(cliente);
 };
 
-exports.buscarCliente=(req,res)=>{
+clienteController.buscarCliente=(req,res)=>{
 
     
     // let sql = `SELECT * from usuarios where id = req.params.usuarioId`;
@@ -66,7 +70,7 @@ exports.buscarCliente=(req,res)=>{
 
 };
 
-exports.modificar=(req,res)=>{
+clienteController.modificar=(req,res)=>{
 
     const cliente = {
         nombre : req.body.name,
@@ -96,7 +100,7 @@ exports.modificar=(req,res)=>{
 
 };
 
-exports.borrar=(req,res)=>{
+clienteController.borrar=(req,res)=>{
 
     let idCliente = req.params.clienteId;
 
@@ -109,3 +113,5 @@ exports.borrar=(req,res)=>{
 
     res.send('Delete cliente');
 };
+
+module.exports= clienteController;

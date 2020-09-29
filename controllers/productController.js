@@ -1,8 +1,10 @@
 
-const connection = require('../../config/db');
+const connection = require('../config/db');
 let sha1 = require('sha1');
 
-exports.listaProductos = (req, res) => {
+productController = {};
+
+productController.listaProductos = (req, res) => {
 
     let sql = `SELECT * FROM producto`;
     connection.query(sql, (err, result) => {
@@ -11,7 +13,7 @@ exports.listaProductos = (req, res) => {
     })
 }
 
-exports.crearProducto = (req, res) => {
+productController.crearProducto = (req, res) => {
 
    // connection.query(sql, (err, result) => {
     //     if (err) throw err;
@@ -20,7 +22,7 @@ exports.crearProducto = (req, res) => {
 }
 
 
-exports.eliminarProducto = (req, res) => {
+productController.eliminarProducto = (req, res) => {
    let producto_id = req.params.producto_id;
     let sql = `DELETE FROM producto WHERE producto_id = ${producto_id}`;
 
@@ -33,7 +35,7 @@ exports.eliminarProducto = (req, res) => {
 
 
 
-exports.actualizarProducto = (req, res) => {
+productController.actualizarProducto = (req, res) => {
 //     let producto_id = req.params.producto_id;
 //     const { nombre_producto, tipo, peso, stock, activo, fecha_creacion, coleccion_id } = req.body;
 //    // let image_product = req.file.filename;
@@ -51,3 +53,4 @@ exports.actualizarProducto = (req, res) => {
 
 
 
+module.exports = productController;
