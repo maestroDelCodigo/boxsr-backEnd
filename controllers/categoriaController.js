@@ -3,6 +3,7 @@
 const connection = require('../config/db');
 let sha1 = require('sha1');
 
+
 categoriaController = {};
 
 categoriaController.crearCategoria=(req,res)=>{
