@@ -126,19 +126,15 @@ DROP TABLE IF EXISTS `comentario`;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `comentario` (
   `comentario_id` int(11) NOT NULL,
-  `path_imagen` varchar(45) DEFAULT NULL,
   `rating` smallint(5) DEFAULT NULL,
   `titulo` varchar(45) NOT NULL,
   `cuerpo_comentario` varchar(245) NOT NULL,
   `usuario_id` int(11) NOT NULL,
-  `coleccion_id` int(11) NOT NULL,
-  `producto_id` int(11) NOT NULL,
   PRIMARY KEY (`comentario_id`),
   KEY `usuario_id_idx` (`usuario_id`),
   KEY `coleccion_id4_idx` (`coleccion_id`),
   KEY `producto_id4_idx` (`producto_id`),
-  CONSTRAINT `comentario_id5` FOREIGN KEY (`coleccion_id`) REFERENCES `coleccion` (`coleccion_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `producto_id5` FOREIGN KEY (`producto_id`) REFERENCES `producto` (`producto_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+
   CONSTRAINT `usuario_id2` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`usuario_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -163,11 +159,14 @@ CREATE TABLE `descuento` (
   `descuento_id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(45) NOT NULL,
   `cantidad` varchar(45) NOT NULL,
-  `usado` tinyint(4) DEFAULT NULL,
+  `numero_usos` smallint(2) DEFAULT NULL,
   `fecha_creacion` datetime DEFAULT NULL,
   `deleted` tinyint(4) NOT NULL,
   `fecha_inicio` datetime NOT NULL,
   `fecha_fin` datetime NOT NULL,
+
+  `precio_base` decimal(5,2) DEFAULT NULL,
+
   PRIMARY KEY (`descuento_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -195,7 +194,12 @@ CREATE TABLE `direccion` (
   `ciudad` varchar(45) NOT NULL,
   `pais` varchar(45) NOT NULL,
   `localidad` varchar(80) DEFAULT NULL,
-  PRIMARY KEY (`direccion_id`)
+
+  `usuario_id` int(11) NOT NULL,
+  PRIMARY KEY (`direccion_id`),
+  KEY `usuario_id9_idx` (`usuario_id`),
+  CONSTRAINT `usuario_id9` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`usuario_id`) ON DELETE CASCADE ON UPDATE CASCADE
+
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -209,6 +213,7 @@ LOCK TABLES `direccion` WRITE;
 UNLOCK TABLES;
 
 --
+
 -- Table structure for table `direccion_usuario`
 --
 
@@ -235,7 +240,7 @@ LOCK TABLES `direccion_usuario` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `imagen_coleccion`
+
 --
 
 DROP TABLE IF EXISTS `imagen_coleccion`;
@@ -332,18 +337,17 @@ CREATE TABLE `producto` (
   `producto_id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(145) NOT NULL,
   `tipo_producto` varchar(145) DEFAULT NULL,
-  `codigo_barras` smallint(13) DEFAULT NULL,
+  `codigo_producto` varchar(30) DEFAULT NULL,
+
+  
   `peso` decimal(2,0) DEFAULT NULL,
   `stock` smallint(4) NOT NULL,
   `deleted` tinyint(4) NOT NULL,
   `fecha_creacion` datetime NOT NULL,
-  `coleccion_id` int(11) NOT NULL,
-  `comentario_id` int(11) NOT NULL,
-  PRIMARY KEY (`producto_id`),
-  KEY `coleccion_id_idx` (`coleccion_id`),
-  KEY `comentario_id3_idx` (`comentario_id`),
-  CONSTRAINT `coleccion_id` FOREIGN KEY (`coleccion_id`) REFERENCES `coleccion` (`coleccion_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `comentario_id3` FOREIGN KEY (`comentario_id`) REFERENCES `comentario` (`comentario_id`) ON DELETE CASCADE ON UPDATE CASCADE
+
+  `precio` decimal(5,2) NOT NULL,
+  PRIMARY KEY (`producto_id`)
+
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -426,7 +430,13 @@ CREATE TABLE `test_piel` (
   `arrugas` varchar(45) NOT NULL,
   `notas` varchar(145) NOT NULL,
   `respuesta` varchar(145) NOT NULL,
-  PRIMARY KEY (`test_id`)
+
+  `fecha_test` datetime DEFAULT NULL,
+  `usuario_id` int(11) NOT NULL,
+  PRIMARY KEY (`test_id`),
+  KEY `id_usuario8_idx` (`usuario_id`),
+  CONSTRAINT `id_usuario8` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`usuario_id`) ON DELETE CASCADE ON UPDATE CASCADE
+
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -440,6 +450,7 @@ LOCK TABLES `test_piel` WRITE;
 UNLOCK TABLES;
 
 --
+
 -- Table structure for table `test_usuario`
 --
 
@@ -466,6 +477,7 @@ LOCK TABLES `test_usuario` WRITE;
 UNLOCK TABLES;
 
 --
+
 -- Table structure for table `usuario`
 --
 
@@ -506,4 +518,6 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-09-29  8:39:13
+
+-- Dump completed on 2020-09-30 13:52:51
+
