@@ -4,9 +4,9 @@ const connection = require('../config/db');
 
 
 
-categoriaController = {};
+adminController = {};
 
-categoriaController.crearCategoria=(req,res)=>{
+adminController.crearAdmin=(req,res)=>{
  
     let nombre = req.body.nombre;
     //creo la query
@@ -19,7 +19,7 @@ categoriaController.crearCategoria=(req,res)=>{
     })
 };
 
-categoriaController.listaCategorias=(req,res)=>{
+adminController.listaAdmin=(req,res)=>{
 
     let sql = `SELECT * FROM categoria`;
 
@@ -30,7 +30,7 @@ categoriaController.listaCategorias=(req,res)=>{
    
 };
 
-categoriaController.buscarCategoria=(req,res)=>{
+adminController.buscarCategoria=(req,res)=>{
 
     
     let sql = `SELECT * from categoria where id = req.params.id_categoria`;
@@ -47,7 +47,7 @@ categoriaController.buscarCategoria=(req,res)=>{
 
 };
 
-categoriaController.modificarCategoria=(req,res)=>{
+adminController.modificarAdmin=(req,res)=>{
 
     let categoria_id = req.params.id;
     let nombre = req.body.nombre;
@@ -74,4 +74,4 @@ categoriaController.modificarCategoria=(req,res)=>{
 // };
 
 
-module.exports= categoriaController;
+module.exports= adminController;
