@@ -71,18 +71,18 @@ res.send('Descuento inactivo');
 }
 
 
-//Eliminar un producto definitivamente
-descuentoController.borrarDescuento=(req, res)=>{
-    let descuento_id = req.params.descuento_id;
+// //Eliminar un producto definitivamente ESTE CONTROLADOR NO SE VA A USAR
+// descuentoController.borrarDescuento=(req, res)=>{
+//     let descuento_id = req.params.descuento_id;
 
-    let sql = `DELETE FROM descuento WHERE descuento_id = ${descuento_id}`;
-    connection.query(sql, (err, result) => {
-        if (err) throw err;
-        res.send('Descuento eliminado');
-    })
+//     let sql = `DELETE FROM descuento WHERE descuento_id = ${descuento_id}`;
+//     connection.query(sql, (err, result) => {
+//         if (err) throw err;
+//         res.send('Descuento eliminado');
+//     })
 
-    res.send('Delete phone');
-};
+//     res.send('Delete phone');
+// };
 
 
 module.exports = descuentoController;

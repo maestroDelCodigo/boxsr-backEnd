@@ -16,8 +16,8 @@ const descuentoController = require ('../controllers/descuentoController')
     // Actualizar un descuento
     router.post('/descuento/:descuento_id', descuentoController.modificarDescuento);
 
-    // Borrar un descuento
-    router.post('/descuento/:descuento_id', descuentoController.borrarDescuento);
+    // // Borrar un descuento NO SE VA A USAR
+    // router.post('/descuento/:descuento_id', descuentoController.borrarDescuento);
     
     // Desactivar un descuento
     router.post('/descuento/:descuento_id', descuentoController.desactivarDescuento);
