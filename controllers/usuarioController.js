@@ -39,7 +39,8 @@ usuarioController.crear=(req,res)=>{
         deleted = 0;
     }    
 
-    let sql = `INSERT INTO usuario(usuario_id, nombre, apellidos, email,fecha_creacion, registrado, suscriptor, password, rol, deleted,fecha_nacimiento) VALUES ('${usuario_id}','${nombre}', '${apellidos}','${email}', '${fecha_creacion}', '${registrado}', '${suscriptor}', '${password}', '${rol}', '${deleted}', '${fecha_nacimiento}')`;
+    let sql = `INSERT INTO usuario(usuario_id, nombre, apellidos, email,fecha_creacion, registrado, suscriptor, password, rol, deleted,fecha_nacimiento) 
+    VALUES ('${usuario_id}','${nombre}', '${apellidos}','${email}', '${fecha_creacion}', '${registrado}', '${suscriptor}', '${password}', '${rol}', '${deleted}', '${fecha_nacimiento}')`;
 
     connection.query(sql, (err, result) => {
         
@@ -118,35 +119,36 @@ usuarioController.modificar=(req,res)=>{
 
 };
 
-usuarioController.borrar=(req,res)=>{
+// BORRAR NO SE VA A UTILIZAR POR EL MOMENTO
+// usuarioController.borrar=(req,res)=>{
 
-    let idUsuario = req.params.usuarioId;
+//     let idUsuario = req.params.usuarioId;
 
-    // let sql = `DELETE FROM usuario WHERE usuario_id = ${idUsuario}`;
+//     // let sql = `DELETE FROM usuario WHERE usuario_id = ${idUsuario}`;
     
-    // connection.query(sql, (err, result) => {
-    //     if (err) {
-    //         res.status(500).send({
-    //             message: err.message
-    //         });
-    //     }        
-    //     //envio un json como respuesta
-    //     res.json(result);
-    // });  
-    let deleted = 1;
+//     // connection.query(sql, (err, result) => {
+//     //     if (err) {
+//     //         res.status(500).send({
+//     //             message: err.message
+//     //         });
+//     //     }        
+//     //     //envio un json como respuesta
+//     //     res.json(result);
+//     // });  
+//     let deleted = 1;
 
-    let sql = `UPDATE usuario SET deleted = '${deleted}'  WHERE usuario_id = ${idUsuario}`;
+//     let sql = `UPDATE usuario SET deleted = '${deleted}'  WHERE usuario_id = ${idUsuario}`;
 
-    connection.query(sql, (err, result) => {
-        if (err) {
-            res.status(500).send({
-                message: err.message
-            });
-        }        
-        //envio un json como respuesta
-        res.json(result);
-    })    
-}
+//     connection.query(sql, (err, result) => {
+//         if (err) {
+//             res.status(500).send({
+//                 message: err.message
+//             });
+//         }        
+//         //envio un json como respuesta
+//         res.json(result);
+//     })    
+// }
 
 usuarioController.login=(req,res)=>{
 
