@@ -10,7 +10,7 @@ const productController = require('../controllers/productController');
     router.post('/crearProducto', productController.crearProducto);
     
     //DELETE
-    router.post('/eliminarProducto/:id', productController.eliminarProducto);
+    // router.post('/eliminarProducto/:id', productController.eliminarProducto);
 
     //DESCATALOGAR
     router.post('/descatalogarProducto/:id', productController.descatalogarProducto)

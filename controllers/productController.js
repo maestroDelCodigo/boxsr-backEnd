@@ -38,16 +38,16 @@ let fecha_creacion=req.body.fecha_creacion;
 }
 
 
-productController.eliminarProducto = (req, res) => {
-   let producto_id = req.params.id;
-    let sql = `DELETE FROM producto WHERE producto_id = ${producto_id}`;
+// productController.eliminarProducto = (req, res) => {
+//    let producto_id = req.params.id;
+//     let sql = `DELETE FROM producto WHERE producto_id = ${producto_id}`;
 
-    connection.query(sql, (err, result) => {
-        if (err) throw err;
-        res.send('producto eliminado')
-    })
+//     connection.query(sql, (err, result) => {
+//         if (err) throw err;
+//         res.send('producto eliminado')
+//     })
 
-}
+// }
 
 productController.descatalogarProducto = (req, res) => {
     let producto_id=req.params.id;
