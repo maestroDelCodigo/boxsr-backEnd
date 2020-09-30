@@ -120,7 +120,7 @@ usuarioController.modificar=(req,res)=>{
 };
 
 // Activar o desactivar un usuario
-descuentoController.desactivarUsuario=(req,res)=>{
+usuarioController.desactivarUsuario=(req,res)=>{
     let desactivarUsuario = req.body.desactivarUsuario;
         if (desactivarUsuario == false){
             let sql = `UPDATE  usuario  SET deleted = 0,

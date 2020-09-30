@@ -20,7 +20,7 @@ const usuarioController = require('../controllers/usuarioController');
     router.post('/:usuarioId', validaciones.modificarUsuario, usuarioController.modificar);
 
     // Delete a user with usereId
-    // router.delete('/:usuarioId', usuarioController.borrar);
-    router.patch('/:usuarioId', usuarioController.borrar);
+    // // router.delete('/:usuarioId', usuarioController.borrar);
+    // router.patch('/:usuarioId', usuarioController.borrar);
     
     module.exports= router;
