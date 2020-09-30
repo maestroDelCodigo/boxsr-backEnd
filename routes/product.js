@@ -4,16 +4,19 @@ var router = express.Router();
 const productController = require('../controllers/productController');
 
     /*READ */
-    router.post('/productos', productController.listaProductos);
+    router.get('/', productController.listaProductos);
     
     //CREATE
-    router.get('/crearProducto', productController.crearProducto);
+    router.post('/crearProducto', productController.crearProducto);
     
     //DELETE
-    router.post('/eliminarproducto/:productoId', productController.eliminarProducto);
+    router.post('/eliminarProducto/:id', productController.eliminarProducto);
+
+    //DESCATALOGAR
+    router.post('/descatalogarProducto/:id', productController.descatalogarProducto)
     
     //UPDATE
-    router.post('/actualizarProducto/:prodctoId', productController.actualizarProducto);
+    router.post('/actualizarProducto/:id', productController.actualizarProducto);
 
 
 module.exports =  router;
