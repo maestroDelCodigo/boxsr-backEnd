@@ -1,30 +1,26 @@
 
 
 const connection = require('../config/db');
-let sha1 = require('sha1');
+
 
 
 categoriaController = {};
 
 categoriaController.crearCategoria=(req,res)=>{
-    if(!req.body.content) {
-        return res.status(400).send({
-            message: "El contenido no puede estar vacio"
-        });
-    }
-    let id_categoria = req.params.id_categoria;
-    let nombre = req.params.nombre;
+ 
+    let nombre = req.body.nombre;
     //creo la query
-    let sql = `INSERT INTO categoria (id_categoria,nombre) VALUES ('${id_categoria}','${nombre}')`;
+    let sql = `INSERT INTO categoria (nombre) VALUE ('${nombre}')`;
     //ejecuto la query
     connection.query(sql, (err, result) => {
         if (err) throw err;
 
-        res.send('ok')
+        res.send('categoria creada')
     })
 };
 
 categoriaController.listaCategorias=(req,res)=>{
+
     let sql = `SELECT * FROM categoria`;
 
     connection.query(sql, (err, result) => {
@@ -53,10 +49,10 @@ categoriaController.buscarCategoria=(req,res)=>{
 
 categoriaController.modificarCategoria=(req,res)=>{
 
-    let id_categoria = req.params.id_categoria;
+    let categoria_id = req.params.id;
     let nombre = req.body.nombre;
   
-    let sql = `UPDATE categoria SET nombre = '${nombre}' WHERE id_categoria = ${id_categoria}`;
+    let sql = `UPDATE categoria SET nombre ='${nombre}' WHERE categoria_id =${categoria_id}`;
 
     connection.query(sql, (err, result) => {
         if (err) throw err;
@@ -65,17 +61,17 @@ categoriaController.modificarCategoria=(req,res)=>{
 
 };
 
-categoriaController.borrarCategoria=(req,res)=>{
+// categoriaController.borrarCategoria=(req,res)=>{
 
-    let id_categoria = req.params.id;
+//     let categoria_id = req.params.id;
 
-    let sql = `DELETE * FROM categoria WHERE id_categoria = ${id_categoria}`;
+//     let sql = `DELETE FROM categoria WHERE categoria_id = ${categoria_id}`;
   
-    connection.query(sql, (err, result) => {
-        if (err) throw err;
-        res.send('Categoria borrada');
-    })
-};
+//     connection.query(sql, (err, result) => {
+//         if (err) throw err;
+//         res.send('Categoria borrada');
+//     })
+// };
 
 
 module.exports= categoriaController;
