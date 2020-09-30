@@ -13,6 +13,8 @@ const usuarioController = require('../controllers/usuarioController');
     router.get('/', usuarioController.lista);
 
     router.get('/:usuarioId', usuarioController.buscarUsuario);
+
+    router.post('/desactivarUsuario', usuarioController.desactivarUsuario);
     
     // Update a user with userId
     router.post('/:usuarioId', validaciones.modificarUsuario, usuarioController.modificar);

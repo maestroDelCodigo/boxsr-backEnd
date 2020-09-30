@@ -119,6 +119,27 @@ usuarioController.modificar=(req,res)=>{
 
 };
 
+// Activar o desactivar un usuario
+descuentoController.desactivarUsuario=(req,res)=>{
+    let desactivarUsuario = req.body.desactivarUsuario;
+        if (desactivarUsuario == false){
+            let sql = `UPDATE  usuario  SET deleted = 0,
+            WHERE usuario_id= ${usuario_id}`;
+            connection.query(sql, (err, result) => {
+                  if (err) throw err;
+        res.send('Usuario activo');
+            }) 
+        }
+        else{
+            let sql = `UPDATE  usuario  SET deleted = 1,
+          WHERE usuario_id= ${usuario_id}`
+          connection.query(sql, (err, result) => {
+            if (err) throw err;
+    res.send('Usuario inactivo');
+            })
+        }
+    }
+
 // BORRAR NO SE VA A UTILIZAR POR EL MOMENTO
 // usuarioController.borrar=(req,res)=>{
 
