@@ -51,24 +51,25 @@ descuentoController.modificarDescuento=(req,res)=>{
 
 // Activar o desactivar un descuento
 descuentoController.desactivarDescuento=(req,res)=>{
-let descuento = req.body.descuento;
-    if (descuento == false){
-        let sql = `UPDATE  descuento  SET deleted = 0,
-        WHERE descuento_id= ${descuento_id}`;
-        connection.query(sql, (err, result) => {
-              if (err) throw err;
-    res.send('Descuento activo');
-        }) 
-    }
-    else{
-        let sql = `UPDATE  descuento  SET deleted = 1,
-      WHERE descuento_id= ${descuento_id}`
-      connection.query(sql, (err, result) => {
-        if (err) throw err;
-res.send('Descuento inactivo');
-        })
-    }
-}
+    let descuento_id =req.params.id;
+    let inactivarDescuento = req.body.deleted;
+        if (inactivarColeccion == false){
+            let sql = `UPDATE  coleccion  SET deleted = 0
+            WHERE descuento_id=' ${descuento_id}'`
+            connection.query(sql, (err, result) => {
+                  if (err) throw err;
+        res.send('Descuento activo');
+            }) 
+        }
+        else{
+            let sql = `UPDATE  coleccion  SET deleted = 1
+          WHERE descuento_id= '${descuento_id}'`
+          connection.query(sql, (err, result) => {
+            if (err) throw err;
+        res.send('Descuento inactivo');
+            })
+        }
+    
 
 
 // //Eliminar un producto definitivamente ESTE CONTROLADOR NO SE VA A USAR
