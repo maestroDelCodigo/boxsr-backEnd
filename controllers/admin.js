@@ -1,77 +1,64 @@
-
-
-const connection = require('../config/db');
-
-
+const connection = require("../config/db");
 
 adminController = {};
 
-adminController.crearAdmin=(req,res)=>{
- 
-    let nombre = req.body.nombre;
-    //creo la query
-    let sql = `INSERT INTO categoria (nombre) VALUE ('${nombre}')`;
-    //ejecuto la query
-    connection.query(sql, (err, result) => {
-        if (err) throw err;
+// Crear un nuevo administrador
+adminController.crearAdmin = (req, res) => {
+  let nombre = req.body.nombre;
+  let apellidos = req.body.apellidos;
+  let email = req.body.email;
+  let password = req.body.password;
+  let rol = req.body.rol;
 
-        res.send('categoria creada')
-    })
+  let sql = `INSERT INTO categoria (nombre) VALUE ('${nombre}','${apellidos}','${email}','${password}','${rol}')`;
+
+  connection.query(sql, (err, result) => {
+    if (err) throw err;
+    res.json(result);
+
+    res.send("admin creado");
+  });
 };
 
-adminController.listaAdmin=(req,res)=>{
+// Mostrar toda la lista de administradores
+adminController.listaAdmin = (req, res) => {
+  let sql = `SELECT * FROM usuario WHERE rol = 1`;
 
-    let sql = `SELECT * FROM categoria`;
-
-    connection.query(sql, (err, result) => {
-        if (err) throw err;
-        res.json(result)
-    })
-   
+  connection.query(sql, (err, result) => {
+    if (err) throw err;
+    res.json(result);
+  });
 };
 
-adminController.buscarCategoria=(req,res)=>{
+// Modificar un administrador
+adminController.modificarAdmin = (req, res) => {
+  let usuario_id = req.params.id;
+  let nombre = req.body.nombre;
+  let apellidos = req.body.apellidos;
+  let email = req.body.email;
+  let password = req.body.password;
+  let rol = req.body.rol;
+  let deleted = req.body.deleted;
 
-    
-    let sql = `SELECT * from categoria where id = req.params.id_categoria`;
+  let sql = `UPDATE usuario SET nombre ='${nombre}', apellidos='${apellidos}', email='${email}',password='${password}',rol='${rol}', deleted='${deleted}' 
+  WHERE usuario_id =${usuario_id} AND rol = 1`;
 
-    connection.query(sql, (err, result) => {
-        if (err) throw err;
-        res.json(result)
-    })
-
-
-    res.send(req.params.id_categoria);
-
-
-
+  connection.query(sql, (err, result) => {
+    if (err) throw err;
+    res.json(result);
+  });
 };
 
-adminController.modificarAdmin=(req,res)=>{
-
-    let categoria_id = req.params.id;
-    let nombre = req.body.nombre;
-  
-    let sql = `UPDATE categoria SET nombre ='${nombre}' WHERE categoria_id =${categoria_id}`;
-
-    connection.query(sql, (err, result) => {
-        if (err) throw err;
-        res.json(result)
-    })
-
-};
-
-// categoriaController.borrarCategoria=(req,res)=>{
+// categoriaController.borrarUsuario=(req,res)=>{
 
 //     let categoria_id = req.params.id;
 
 //     let sql = `DELETE FROM categoria WHERE categoria_id = ${categoria_id}`;
-  
+
 //     connection.query(sql, (err, result) => {
 //         if (err) throw err;
 //         res.send('Categoria borrada');
 //     })
 // };
 
-
-module.exports= adminController;
+module.exports = adminController;
