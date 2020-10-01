@@ -69,6 +69,7 @@ descuentoController.desactivarDescuento=(req,res)=>{
         res.send('Descuento inactivo');
             })
         }
+    };
     
 
 
