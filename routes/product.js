@@ -3,10 +3,10 @@ var router = express.Router();
 
 const productController = require('../controllers/productController');
 
-    /*READ */
+    
     router.get('/', productController.listaProductos);
     
-    //CREATE
+   
     router.post('/crearProducto', productController.crearProducto);
     
     //DELETE
@@ -15,7 +15,7 @@ const productController = require('../controllers/productController');
     //DESCATALOGAR
     router.post('/descatalogarProducto/:id', productController.descatalogarProducto)
     
-    //UPDATE
+    
     router.post('/actualizarProducto/:id', productController.actualizarProducto);
 
 
