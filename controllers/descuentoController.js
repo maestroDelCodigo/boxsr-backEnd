@@ -53,7 +53,7 @@ descuentoController.modificarDescuento=(req,res)=>{
 descuentoController.desactivarDescuento=(req,res)=>{
     let descuento_id =req.params.id;
     let inactivarDescuento = req.body.deleted;
-        if (inactivarColeccion == false){
+        if (inactivarDescuento == false){
             let sql = `UPDATE  coleccion  SET deleted = 0
             WHERE descuento_id=' ${descuento_id}'`
             connection.query(sql, (err, result) => {
