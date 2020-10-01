@@ -191,7 +191,7 @@ usuarioController.login=(req,res)=>{
             });
         }        
         //envio un json como respuesta
-        res.json(result);
+        res.json(result[0]);
     }) 
 }   
 module.exports = usuarioController;
