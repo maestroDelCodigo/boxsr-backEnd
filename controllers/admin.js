@@ -49,6 +49,43 @@ adminController.modificarAdmin = (req, res) => {
   });
 };
 
+// Ventas mensuales
+let fecha_pedido_incio = req.body.fecha_pedido_incio;
+let fecha_pedido_fin = req.body.fecha_pedido_fin;
+
+let sql = `SELECT total_pedido,SUM(total_pedido) as Suma_Mensual
+FROM pedido
+WHERE 
+estado_pago = 'pagado' AND 
+fecha_pedido BETWEEN fecha_pedido_inicio ='${fecha_pedido_incio}' AND fecha_pedido_fin ='${fecha_pedido_fin}'`
+
+connection.query(sql,(err, result)=>{
+  if(err)throw err;
+  res.json(result)
+})
+
+// Ventas diarias
+let fecha_pedido_incio = req.body.fecha_pedido_incio;
+let fecha_pedido_fin = req.body.fecha_pedido_fin;
+
+let registro = Date.now();
+console.log(registro)
+
+let sql = `SELECT total_pedido,SUM(total_pedido) as Suma_Mensual
+FROM pedido
+WHERE 
+estado_pago = 'pagado' AND 
+fecha_pedido BETWEEN fecha_pedido_inicio ='${fecha_pedido_incio}' 
+AND fecha_pedido_fin ='${fecha_pedido_fin}'`
+
+connection.query(sql,(err, result)=>{
+  if(err)throw err;
+  res.json(result)
+})
+
+
+
+
 // categoriaController.borrarUsuario=(req,res)=>{
 
 //     let categoria_id = req.params.id;
