@@ -17,17 +17,18 @@ productController.crearProducto = (req, res) => {
 
 let nombre=req.body.nombre;
 let tipo_producto=req.body.tipo_producto;
-let codigo_barras=req.body.codigo_barras;
+let codigo_producto=req.body.codigo_producto;
 let peso=req.body.peso;
 let stock= req.body.stock;
 let deleted=req.body.deleted;
 let fecha_creacion=req.body.fecha_creacion;
+let precio= req.body.precio;
 
 
 
-    let sql = `INSERT INTO producto (nombre,tipo_producto,codigo_barras,peso,stock,deleted,fecha_creacion) 
-    VALUES ('${nombre}','${tipo_producto}', '${codigo_barras}',
-    '${peso}','${stock}','${deleted}' ,'${fecha_creacion}')`;
+    let sql = `INSERT INTO producto (nombre,tipo_producto,codigo_producto,peso,stock,deleted,fecha_creacion,precio) 
+    VALUES ('${nombre}','${tipo_producto}', '${codigo_producto}',
+    '${peso}','${stock}','${deleted}' ,'${fecha_creacion}',${precio})`;
 
 
 
@@ -51,15 +52,25 @@ let fecha_creacion=req.body.fecha_creacion;
 
 productController.descatalogarProducto = (req, res) => {
     let producto_id=req.params.id;
-    let producto = req.body.producto;
-    if (producto == false){
-        let sql = `UPDATE  producto  SET deleted = 0,
-        WHERE producto_id= ${producto_id}`;
-    } else{
-        let sql = `UPDATE  descuento  SET deleted = 1,
-      WHERE producto_id= ${producto_id}`;
-    }
-    res.send('Producto descatalogado');
+    let descatalogarProducto = req.body.deleted;
+        if (descatalogarProducto == false){
+            let sql = `UPDATE  producto  SET deleted = 0
+            WHERE producto_id=' ${producto_id}'`
+            connection.query(sql, (err, result) => {
+                  if (err) throw err;
+        res.send('Producto activo');
+            }) 
+           
+        }
+        else{
+            let sql = `UPDATE  producto  SET deleted = 1
+          WHERE producto_id= '${producto_id}'`
+          connection.query(sql, (err, result) => {
+            if (err) throw err;
+        res.send('Producto inactivo');
+            })
+           
+        }
  
  }
 
@@ -71,14 +82,15 @@ productController.actualizarProducto = (req, res) => {
 
     let nombre=req.body.nombre;
     let tipo_producto=req.body.tipo_producto;
-    let codigo_barras=req.body.codigo_barras;
+    let codigo_producto=req.body.codigo_producto;
     let peso=req.body.peso;
     let stock= req.body.stock;
     let deleted=req.body.deleted;
     let fecha_creacion=req.body.fecha_creacion;
+    let precio=req.body.precio;
    
     let sql = `UPDATE producto SET nombre='${nombre}', tipo_producto='${tipo_producto}',
-     codigo_barras='${codigo_barras}', peso='${peso}',stock='${stock}',deleted=${deleted}, fecha_creacion='${fecha_creacion}' WHERE producto_id=${producto_id}`;
+    codigo_producto='${codigo_producto}', peso='${peso}',stock='${stock}',deleted=${deleted}, fecha_creacion='${fecha_creacion}', precio='${precio}' WHERE producto_id=${producto_id}`;
 
     connection.query(sql, (err, result) => {
         if (err) throw err;
