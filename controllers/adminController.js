@@ -49,55 +49,39 @@ adminController.modificarAdmin = (req, res) => {
   });
 };
 
-
-
 // Ventas mensuales
-let fecha_pedido_incio = req.body.fecha_pedido_incio;
-let fecha_pedido_fin = req.body.fecha_pedido_fin;
+adminController.ventasMensuales = (req, res) => {
+  var date = new Date();
+  var fechaMensual =
+    date.getFullYear() + "-" + parseInt(date.getMonth() + 1) + "%";
 
-let sql = `SELECT total_pedido,SUM(total_pedido) as Suma_Mensual
-FROM pedido
-WHERE 
-estado_pago = 'pagado' AND 
-fecha_pedido BETWEEN fecha_pedido_inicio ='${fecha_pedido_incio}' AND fecha_pedido_fin ='${fecha_pedido_fin}'`
+  let sql = `SELECT total_pedido FROM pedido WHERE estado_pago = 'pagado' AND 
+fecha_pedido LIKE '${fechaMensual}'  `;
 
-connection.query(sql,(err, result)=>{
-  if(err)throw err;
-  res.json(result)
-})
+  connection.query(sql, (err, result) => {
+    if (err) throw err;
+    res.json(result);
+  });
+};
 
 // Ventas diarias
-let fecha_pedido_incio = req.body.fecha_pedido_incio;
-let fecha_pedido_fin = req.body.fecha_pedido_fin;
+adminController.ventasDiarias = (req, res) => {
+  var date = new Date();
+  var fechaDiaria =
+    date.getFullYear() +
+    "-" +
+    parseInt(date.getMonth() + 1) +
+    "-" +
+    0 +
+    date.getDate() +
+    "%";
+    
+  let sql = `SELECT total_pedido FROM pedido WHERE estado_pago = 'pagado' AND 
+fecha_pedido LIKE '${fechaDiaria}'  `;
 
-let registro = Date.now();
-console.log(registro)
-
-let sql = `SELECT total_pedido,SUM(total_pedido) as Suma_Mensual
-FROM pedido
-WHERE 
-estado_pago = 'pagado' AND 
-fecha_pedido BETWEEN fecha_pedido_inicio ='${fecha_pedido_incio}' 
-AND fecha_pedido_fin ='${fecha_pedido_fin}'`
-
-connection.query(sql,(err, result)=>{
-  if(err)throw err;
-  res.json(result)
-})
-
-
-
-
-// categoriaController.borrarUsuario=(req,res)=>{
-
-//     let categoria_id = req.params.id;
-
-//     let sql = `DELETE FROM categoria WHERE categoria_id = ${categoria_id}`;
-
-//     connection.query(sql, (err, result) => {
-//         if (err) throw err;
-//         res.send('Categoria borrada');
-//     })
-// };
-
+  connection.query(sql, (err, result) => {
+    if (err) throw err;
+    res.json(result);
+  });
+};
 module.exports = adminController;

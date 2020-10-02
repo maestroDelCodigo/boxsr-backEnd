@@ -1,20 +1,25 @@
 var express = require('express');
 var router = express.Router();
+let verify = require('../config/verify')
 
+const adminController = require ('../controllers/adminController')
 
-const adminController = require ('../controllers/categoriaController')
+    // // Listado de administradores de la pagina
+    // router.get('/', adminController.listaAdmin);
 
-    // Listado de administradores de la pagina
-    router.get('/', adminController.listaAdmin);
-
-    // Crear un nuevo administrador
-    router.post('/crearAdmin', adminController.crearAdmin);
-
-    // router.get('/buscarCategoria/:id', adminController.buscarCategoria);
+    // // Crear un nuevo administrador
+    // router.post('/crearAdmin', adminController.crearAdmin);
     
-    // Modificar un administrador
-    router.post('/modificarAdmin/:id', adminController.modificarAdmin);
+    // // Modificar un administrador
+    // router.post('/modificarAdmin/:id', adminController.modificarAdmin);
 
-    // router.post('/borrarCategoria/:id', categoriaController.borrarCategoria);
+
+    // Ventas mensuales
+    router.get('/ventasMensuales', adminController.ventasMensuales);
+
+    router.get('/ventasDiarias', adminController.ventasDiarias)
+
+    // // Ventas diarias
+    // router.get('/ventasDiarias',  adminController.ventasDiarias);
     
     module.exports= router;
