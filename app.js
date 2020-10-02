@@ -9,7 +9,8 @@ var categoriaRouter =  require ('./routes/categoria');
 var coleccionRouter =  require('./routes/coleccion');
 var pedidosRouter =  require('./routes/pedidos');
 var productRouter =  require('./routes/product');
-var usuarioRouter =  require('./routes/usuario')
+var usuarioRouter =  require('./routes/usuario');
+var adminRouter = require('./routes/admin')
 
 var app = express();
 
@@ -17,11 +18,13 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
+
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -35,7 +38,12 @@ app.use('/categoria',categoriaRouter);
 app.use('/coleccion', coleccionRouter);
 app.use('/pedidos', pedidosRouter);
 app.use('/product', productRouter);
+
+app.use('/usuario', usuarioRouter);
+app.use('/admin', adminRouter)
+
 app.use('/usuarios', usuarioRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
