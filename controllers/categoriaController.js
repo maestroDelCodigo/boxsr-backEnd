@@ -33,19 +33,17 @@ categoriaController.listaCategorias=(req,res)=>{
 categoriaController.buscarCategoria=(req,res)=>{
 
     
-    let sql = `SELECT * from categoria where id = req.params.id_categoria`;
+    let sql = `SELECT * from categoria where categoria_id = ${req.params.id}`;
 
     connection.query(sql, (err, result) => {
         if (err) throw err;
         res.json(result)
     })
 
-
-    res.send(req.params.id_categoria);
-
+ }
 
 
-};
+
 
 categoriaController.modificarCategoria=(req,res)=>{
 

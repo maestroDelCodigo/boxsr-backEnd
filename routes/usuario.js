@@ -1,19 +1,26 @@
 var express = require('express');
 var router = express.Router();
+const validaciones = require('../utils/userValidation');
 
-const usuarioController = require('../controllers/usuarioController')
+const usuarioController = require('../controllers/usuarioController');
+    
+    router.post('/login', validaciones.loginUsuario, usuarioController.login);
+
     // Create a new user
-    router.post('/usuarios', usuarioController.crear);
+    router.post('/', validaciones.crearUsuario, usuarioController.crear);
 
     //Retrieve all user
-    router.get('/usuarios', usuarioController.lista);
+    router.get('/', usuarioController.lista);
 
-    router.get('/usuarios/:usuarioId', usuarioController.buscarUsuario);
+    router.get('/:usuarioId', usuarioController.buscarUsuario);
+
+    router.post('/desactivarUsuario', usuarioController.desactivarUsuario);
     
     // Update a user with userId
-    router.post('/usuarios/:usuarioId', usuarioController.modificar);
+    router.post('/:usuarioId', validaciones.modificarUsuario, usuarioController.modificar);
 
     // Delete a user with usereId
-    router.post('/usuarios/:usuarioId', usuarioController.borrar);
+    // // router.delete('/:usuarioId', usuarioController.borrar);
+    // router.patch('/:usuarioId', usuarioController.borrar);
     
     module.exports= router;

@@ -5,88 +5,105 @@ const connection = require('../config/db');
 coleccionController = {};
 
 
-coleccionController.crear=(req,res)=>{
-    // Validate request
-    if(!req.body.content) {
-        return res.status(400).send({
-            message: "El contenido no puede estar vacio"
-        });
-    }
-    res.send('ok');
-};
+coleccionController.crearColeccion=(req,res)=>{
 
-coleccionController.lista=(req,res)=>{
+let nombre=req.body.nombre;
+let deleted=req.body.deleted;
+let video_url=req.body.video_url;
+let precio_rebajado=req.body.precio_rebajado;
+let precio_original= req.body.precio_original;
 
-    // let sql = `SELECT * FROM colection`;
+let sql = `INSERT INTO coleccion (nombre,deleted,video_url,precio_rebajado,precio_original)
+ VALUES ('${nombre}','${deleted}','${video_url}',${precio_rebajado}, ${precio_original})`;
 
-    // connection.query(sql, (err, result) => {
-    //     if (err) throw err;
-    //     res.json(result)
-    // })
-    
-   
-};
+  
+ connection.query(sql, (err, result) => {
+    if (err) throw err;
+    res.send('Colección creada')
+})
+}
+
+coleccionController.listaColecciones=(req,res)=>{
+
+    let sql = `SELECT * FROM coleccion`;
+
+    connection.query(sql, (err, result) => {
+        if (err) throw err;
+        res.json(result)
+    })
+}
 
 coleccionController.buscarColeccion=(req,res)=>{
 
+    let sql = `SELECT * from coleccion where coleccion_id = ${req.params.id}`;
+
+    connection.query(sql, (err, result) => {
+        if (err) throw err;
+       res.send('Colección')
+    })
+
+ }
+
+coleccionController.modificarColeccion=(req,res)=>{
+
+    let coleccion_id=req.params.id;
+
+    let nombre=req.body.nombre;
+    let deleted=req.body.deleted;
+    let video_url=req.body.video_url;
+    let precio_rebajado=req.body.precio_rebajado;
+    let precio_original= req.body.precio_original;
     
-    // let sql = `SELECT * from coleccion where id = req.params.coleccionId`;
+  
+    let sql = `UPDATE coleccion SET nombre ='${nombre}', deleted=${deleted},
+     video_url='${video_url}', precio_rebajado=${precio_rebajado}, precio_original=${precio_original} 
+     WHERE coleccion_id =${coleccion_id}`;
 
-    // connection.query(sql, (err, result) => {
-    //     if (err) throw err;
-    //     res.json(result)
-    // })
+    connection.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send('Coleccion modificada')
+    })
+
+}
 
 
-    res.send(req.params.coleccionId);
 
-
-
-};
-
-coleccionController.modificar=(req,res)=>{
-
-    const coleccion = {
-        nombre : req.body.name,
-        productos : req.body.productos,
-        precio : req.body.precio
+coleccionController.inactivarColeccion=(req,res)=>{
+    let coleccion_id=req.params.id;
+    let inactivarColeccion = req.body.deleted;
+        if (inactivarColeccion == false){
+            let sql = `UPDATE  coleccion  SET deleted = 0
+            WHERE coleccion_id=' ${coleccion_id}'`
+            connection.query(sql, (err, result) => {
+                  if (err) throw err;
+        res.send('Coleccion activa');
+            }) 
+           
+        }
+        else{
+            let sql = `UPDATE  coleccion  SET deleted = 1
+          WHERE coleccion_id= '${coleccion_id}'`
+          connection.query(sql, (err, result) => {
+            if (err) throw err;
+        res.send('Coleccion inactiva');
+            })
+           
+        }
     }
 
 
-    res.send(coleccion);
+// coleccionController.borrarColeccion=(req,res)=>{
 
-    // let id_phone = req.params.id_phone;
+//     let coleccion_id = req.params.id;
 
-    // let name_phone = req.body.name_phone
-    // let number_phone = req.body.number_phone
-    // let color_phone = req.body.color_phone
-    // let size_phone = req.body.size_phone
-    // let resolution = req.body.resolution
-
-    // let sql = `UPDATE phone SET name_phone = '${name_phone}', 
-    // number_phone= '${number_phone}', color_phone= '${color_phone}',
-    // size_phone= '${size_phone}',resolution= '${resolution}' WHERE id_phone = ${id_phone}`;
-
-    // connection.query(sql, (err, result) => {
-    //     if (err) throw err;
-    //     res.json(result)
-    // })
-
-};
-
-coleccionController.borrar=(req,res)=>{
-
-    let idColeccion = req.params.coleccionId;
-
-    // let sql = `DELETE FROM coleccion WHERE id_coleccion = ${id_coleccion}`;
-    // //ejecutamos la query para eliminar
-    // connection.query(sql, (err, result) => {
-    //     if (err) throw err;
-    //     res.send('Delete coleccion');
-    // })
-    res.send('Delete coleccion')
-
-};
+//     let sql = `DELETE FROM coleccion WHERE coleccion_id = ${coleccion_id}`;
+    
+//     connection.query(sql, (err, result) => {
+//         if (err) throw err;
+//         res.send('Coleccion borrada');
+//     })
+   
+// }
 
 
 module.exports= coleccionController;

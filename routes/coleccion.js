@@ -4,19 +4,18 @@ var router = express.Router();
 
     const coleccionController = require('../controllers/coleccionController');
 
-    // Create a new coleccion
-    router.post('/colecciones', coleccionController.crear);
+    router.get('/', coleccionController.listaColecciones);
 
-    //Retrieve all colecction
-    router.get('/colecciones', coleccionController.lista);
+    router.post('/crearColeccion', coleccionController.crearColeccion);
 
-    router.get('/colecciones/:coleccionId', coleccionController.buscarColeccion);
+    router.get('/buscarColeccion/:id', coleccionController.buscarColeccion);
     
-    // Update a user with coleccionId
-    router.post('/colecciones/:coleccionId', coleccionController.modificar);
+    router.post('/modificarColeccion/:id', coleccionController.modificarColeccion);
 
-    // Delete a user with coleccionId
-    router.post('/colecciones/:coleccionId', coleccionController.borrar);
+    router.post('/inactivarColeccion/:id',coleccionController.inactivarColeccion);
+
+   
+    //router.post('/borrarColeccion/:id', coleccionController.borrarColeccion);
 
 
     module.exports= router;
