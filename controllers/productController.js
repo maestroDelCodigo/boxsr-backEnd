@@ -34,7 +34,7 @@ let precio= req.body.precio;
 
    connection.query(sql, (err, result) => {
         if (err) throw err;
-        res.send('producto creado')
+        res.json('producto creado')
     })
 }
 
@@ -86,15 +86,15 @@ productController.actualizarProducto = (req, res) => {
     let peso=req.body.peso;
     let stock= req.body.stock;
     let deleted=req.body.deleted;
-    let fecha_creacion=req.body.fecha_creacion;
+    // let fecha_creacion=req.body.fecha_creacion;
     let precio=req.body.precio;
    
     let sql = `UPDATE producto SET nombre='${nombre}', tipo_producto='${tipo_producto}',
-    codigo_producto='${codigo_producto}', peso='${peso}',stock='${stock}',deleted=${deleted}, fecha_creacion='${fecha_creacion}', precio='${precio}' WHERE producto_id=${producto_id}`;
+    codigo_producto='${codigo_producto}', peso='${peso}',stock='${stock}',deleted=${deleted}, precio='${precio}' WHERE producto_id=${producto_id}`;
 
     connection.query(sql, (err, result) => {
         if (err) throw err;
-        res.send('producto actualizado');
+        res.json('producto actualizado');
 
 })
 }

@@ -127,7 +127,7 @@ usuarioController.desactivarUsuario=(req,res)=>{
             WHERE usuario_id= ${usuario_id}`;
             connection.query(sql, (err, result) => {
                   if (err) throw err;
-        res.send('Usuario activo');
+        res.json('Usuario activo');
             }) 
         }
         else{
@@ -135,7 +135,7 @@ usuarioController.desactivarUsuario=(req,res)=>{
           WHERE usuario_id= ${usuario_id}`
           connection.query(sql, (err, result) => {
             if (err) throw err;
-    res.send('Usuario inactivo');
+    res.json('Usuario inactivo');
             })
         }
     }
