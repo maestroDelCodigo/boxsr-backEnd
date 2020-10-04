@@ -14,6 +14,7 @@ var router = express.Router();
 
     router.post('/inactivarColeccion/:id',coleccionController.inactivarColeccion);
 
+    router.get('/productos/:id', coleccionController.obtenerProductosAsociados);
    
     //router.post('/borrarColeccion/:id', coleccionController.borrarColeccion);
 

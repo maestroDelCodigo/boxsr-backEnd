@@ -91,6 +91,28 @@ coleccionController.inactivarColeccion=(req,res)=>{
         }
     }
 
+coleccionController.obtenerProductosAsociados= (req,res) =>{
+
+    let coleccion_id=req.params.id;
+    
+    let sql = `SELECT *
+    FROM producto_coleccion A
+    JOIN producto B  ON B.producto_id=A.producto_id
+    where A.coleccion_id = ${coleccion_id}`;
+
+
+    connection.query(sql, (err, result) => {
+        if (err) {
+            res.status(500).json({
+                message: err.message
+            });
+        }        
+        
+        //envio un json como respuesta
+        res.json(result);
+    }) 
+}
+
 
 // coleccionController.borrarColeccion=(req,res)=>{
 
