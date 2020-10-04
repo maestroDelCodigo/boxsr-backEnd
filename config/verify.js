@@ -6,7 +6,7 @@ function verify(req, res, next) {
     const token = req.header('token');
     console.log(token)
     if (!token) {
-        res.send('no hay token')
+        res.json('no hay token')
     }
     next();
 

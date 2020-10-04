@@ -58,7 +58,7 @@ productController.descatalogarProducto = (req, res) => {
             WHERE producto_id=' ${producto_id}'`
             connection.query(sql, (err, result) => {
                   if (err) throw err;
-        res.send('Producto activo');
+        res.json('Producto activo');
             }) 
            
         }
@@ -67,7 +67,7 @@ productController.descatalogarProducto = (req, res) => {
           WHERE producto_id= '${producto_id}'`
           connection.query(sql, (err, result) => {
             if (err) throw err;
-        res.send('Producto inactivo');
+        res.json('Producto inactivo');
             })
            
         }

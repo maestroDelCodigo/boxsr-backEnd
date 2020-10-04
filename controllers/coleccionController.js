@@ -19,7 +19,7 @@ let sql = `INSERT INTO coleccion (nombre,deleted,video_url,precio_rebajado,preci
   
  connection.query(sql, (err, result) => {
     if (err) throw err;
-    res.send('Colección creada')
+    res.json('Colección creada')
 })
 }
 
@@ -39,7 +39,7 @@ coleccionController.buscarColeccion=(req,res)=>{
 
     connection.query(sql, (err, result) => {
         if (err) throw err;
-       res.send('Colección')
+       res.json('Colección')
     })
 
  }
@@ -61,7 +61,7 @@ coleccionController.modificarColeccion=(req,res)=>{
 
     connection.query(sql, (err, result) => {
         if (err) throw err;
-        res.send('Coleccion modificada')
+        res.json('Coleccion modificada')
     })
 
 }
@@ -76,7 +76,7 @@ coleccionController.inactivarColeccion=(req,res)=>{
             WHERE coleccion_id=' ${coleccion_id}'`
             connection.query(sql, (err, result) => {
                   if (err) throw err;
-        res.send('Coleccion activa');
+        res.json('Coleccion activa');
             }) 
            
         }
@@ -85,7 +85,7 @@ coleccionController.inactivarColeccion=(req,res)=>{
           WHERE coleccion_id= '${coleccion_id}'`
           connection.query(sql, (err, result) => {
             if (err) throw err;
-        res.send('Coleccion inactiva');
+        res.json('Coleccion inactiva');
             })
            
         }
