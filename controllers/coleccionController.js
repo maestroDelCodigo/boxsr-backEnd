@@ -12,15 +12,37 @@ let deleted=req.body.deleted;
 let video_url=req.body.video_url;
 let precio_rebajado=req.body.precio_rebajado;
 let precio_original= req.body.precio_original;
+let productos_asociados = req.body.productos_asociados;
 
 let sql = `INSERT INTO coleccion (nombre,deleted,video_url,precio_rebajado,precio_original)
  VALUES ('${nombre}','${deleted}','${video_url}',${precio_rebajado}, ${precio_original})`;
 
-  
+  // https://codeburst.io/node-js-mysql-and-async-await-6fb25b01b628
  connection.query(sql, (err, result) => {
-    if (err) throw err;
-    res.send('Colección creada')
-})
+    if (err) throw err;    
+    
+    let sqlProductos = `INSERT INTO producto_coleccion (producto_id, coleccion_id, cantidad )
+    VALUES ('${productos_asociados[0]}','${result.insertId}', 0)`;
+
+    if(productos_asociados.length > 1)
+    {
+        for(let i= 1; i < productos_asociados.length; i++ )
+        {
+            sqlProductos = sqlProductos + `,('${productos_asociados[i]}','${result.insertId}', 0)`
+        }
+    }    
+
+    connection.query(sqlProductos, (err, result) => {
+        if (err) {            
+            res.status(500).json({
+                message: err.message
+            });
+        }    
+    
+        res.json(result)
+     })  
+ })
+
 }
 
 coleccionController.listaColecciones=(req,res)=>{
@@ -39,7 +61,7 @@ coleccionController.buscarColeccion=(req,res)=>{
 
     connection.query(sql, (err, result) => {
         if (err) throw err;
-       res.send('Colección')
+       res.json('Colección')
     })
 
  }
@@ -53,6 +75,7 @@ coleccionController.modificarColeccion=(req,res)=>{
     let video_url=req.body.video_url;
     let precio_rebajado=req.body.precio_rebajado;
     let precio_original= req.body.precio_original;
+    let productos_asociados = req.body.productos_asociados;
     
   
     let sql = `UPDATE coleccion SET nombre ='${nombre}', deleted=${deleted},
@@ -60,12 +83,48 @@ coleccionController.modificarColeccion=(req,res)=>{
      WHERE coleccion_id =${coleccion_id}`;
 
     connection.query(sql, (err, result) => {
-        if (err) throw err;
-        res.send('Coleccion modificada')
-    })
+        if (err) { 
+            res.status(500).json({
+            message: err.message
+            });
+        }
+        
+        // borrar los productos de esa coleccion 
 
+        let sqlBorrarAsociados = `DELETE FROM producto_coleccion WHERE coleccion_id = ${coleccion_id}`; 
+
+        connection.query(sqlBorrarAsociados, (err, result) => {
+            if (err) {            
+                res.status(500).json({
+                    message: err.message
+                });
+            }
+
+            let sqlProductos = `INSERT INTO producto_coleccion (producto_id, coleccion_id, cantidad )
+            VALUES ('${productos_asociados[0]}','${coleccion_id}', 0)`;
+
+            if(productos_asociados.length > 1)
+            {
+                for(let i= 1; i < productos_asociados.length; i++ )
+                {
+                    sqlProductos = sqlProductos + `,('${productos_asociados[i]}','${coleccion_id}', 0)`
+                }
+            }    
+
+            connection.query(sqlProductos, (err, result) => {
+                if (err) {            
+                    res.status(500).json({
+                        message: err.message
+                    });
+                }
+
+                res.json('Coleccion modificada')
+            });
+                                                  
+         });
+              
+    });
 }
-
 
 
 coleccionController.inactivarColeccion=(req,res)=>{
@@ -76,7 +135,7 @@ coleccionController.inactivarColeccion=(req,res)=>{
             WHERE coleccion_id=' ${coleccion_id}'`
             connection.query(sql, (err, result) => {
                   if (err) throw err;
-        res.send('Coleccion activa');
+        res.json('Coleccion activa');
             }) 
            
         }
@@ -85,11 +144,33 @@ coleccionController.inactivarColeccion=(req,res)=>{
           WHERE coleccion_id= '${coleccion_id}'`
           connection.query(sql, (err, result) => {
             if (err) throw err;
-        res.send('Coleccion inactiva');
+        res.json('Coleccion inactiva');
             })
            
         }
     }
+
+coleccionController.obtenerProductosAsociados= (req,res) =>{
+
+    let coleccion_id=req.params.id;
+    
+    let sql = `SELECT *
+    FROM producto_coleccion A
+    JOIN producto B  ON B.producto_id=A.producto_id
+    where A.coleccion_id = ${coleccion_id}`;
+
+
+    connection.query(sql, (err, result) => {
+        if (err) {
+            res.status(500).json({
+                message: err.message
+            });
+        }        
+        
+        //envio un json como respuesta
+        res.json(result);
+    }) 
+}
 
 
 // coleccionController.borrarColeccion=(req,res)=>{

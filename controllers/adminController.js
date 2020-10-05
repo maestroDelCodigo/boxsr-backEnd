@@ -14,9 +14,7 @@ adminController.crearAdmin = (req, res) => {
 
   connection.query(sql, (err, result) => {
     if (err) throw err;
-    res.json(result);
-
-    res.send("admin creado");
+    res.json(result);    
   });
 };
 

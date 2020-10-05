@@ -15,7 +15,7 @@ categoriaController.crearCategoria=(req,res)=>{
     connection.query(sql, (err, result) => {
         if (err) throw err;
 
-        res.send('categoria creada')
+        res.json('categoria creada')
     })
 };
 

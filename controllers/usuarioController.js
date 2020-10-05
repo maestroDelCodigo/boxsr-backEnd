@@ -45,7 +45,7 @@ usuarioController.crear=(req,res)=>{
     connection.query(sql, (err, result) => {
         
         if (err) {
-            res.status(500).send({
+            res.status(500).json({
                 message:  err.message//"Error al insertar en base de datos"
             });
         }        
@@ -60,7 +60,7 @@ usuarioController.lista=(req,res)=>{
 
     connection.query(sql, (err, result) => {
         if (err) {
-            res.status(500).send({
+            res.status(500).json({
                 message: err.message
             });
         }        
@@ -75,7 +75,7 @@ usuarioController.buscarUsuario=(req,res)=>{
 
     connection.query(sql, (err, result) => {
         if (err) {
-            res.status(500).send({
+            res.status(500).json({
                 message: err.message
             });
         }        
@@ -109,7 +109,7 @@ usuarioController.modificar=(req,res)=>{
 
     connection.query(sql, (err, result) => {
         if (err) {
-            res.status(500).send({
+            res.status(500).json({
                 message: err.message
             });
         }        
@@ -127,7 +127,7 @@ usuarioController.desactivarUsuario=(req,res)=>{
             WHERE usuario_id= ${usuario_id}`;
             connection.query(sql, (err, result) => {
                   if (err) throw err;
-        res.send('Usuario activo');
+        res.json('Usuario activo');
             }) 
         }
         else{
@@ -135,7 +135,7 @@ usuarioController.desactivarUsuario=(req,res)=>{
           WHERE usuario_id= ${usuario_id}`
           connection.query(sql, (err, result) => {
             if (err) throw err;
-    res.send('Usuario inactivo');
+    res.json('Usuario inactivo');
             })
         }
     }
@@ -186,7 +186,7 @@ usuarioController.login=(req,res)=>{
 
     connection.query(sql, (err, result) => {
         if (err) {
-            res.status(500).send({
+            res.status(500).json({
                 message: err.message
             });
         }        

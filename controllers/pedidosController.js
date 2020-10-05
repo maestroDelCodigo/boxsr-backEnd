@@ -22,7 +22,7 @@ let sql = `INSERT INTO pedido (estado_pago,forma_entrega,iva,total_pedido,estado
 
  connection.query( sql, (err, result)=>{
      if(err) throw err;
-     res.send('Pedido creado');
+     res.json('Pedido creado');
  })
 
   
@@ -35,7 +35,7 @@ let sql= `select * from pedido`;
 
 connection.query(sql ,(err,result) => {
     if(err) throw err;
-    res.send(result);
+    res.json(result);
     }) 
 }
 
@@ -46,7 +46,7 @@ pedidosController.buscarPedido= (req, res) => {
 
     connection.query(sql,(err,result)=>{
         if(err) throw err;
-        res.send(result);
+        res.json(result);
     })
 }
 
@@ -69,7 +69,7 @@ pedidosController.modificarPedido= (req, res) => {
 
     connection.query(sql, (err, result) => {
         if (err) throw err;
-        res.send('Pedido modificado')
+        res.json('Pedido modificado')
     })
 }
 
