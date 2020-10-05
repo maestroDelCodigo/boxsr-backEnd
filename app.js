@@ -17,6 +17,9 @@ var app = express();
 
 global.__basedir = __dirname;
 
+// https://www.tutorialspoint.com/expressjs/expressjs_static_files.htm
+app.use('/static', express.static('./resources/static/assets/uploads'));
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
