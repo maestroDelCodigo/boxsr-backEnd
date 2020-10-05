@@ -11,8 +11,11 @@ var pedidosRouter =  require('./routes/pedidos');
 var productRouter =  require('./routes/product');
 var usuarioRouter =  require('./routes/usuario');
 var adminRouter = require('./routes/admin')
+var fileRouter = require('./routes/file')
 
 var app = express();
+
+global.__basedir = __dirname;
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -43,6 +46,8 @@ app.use('/usuario', usuarioRouter);
 app.use('/admin', adminRouter)
 
 app.use('/usuarios', usuarioRouter);
+
+app.use('/file', fileRouter);
 
 
 // catch 404 and forward to error handler
