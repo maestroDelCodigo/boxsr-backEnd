@@ -1,25 +1,27 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
-let verify = require('../config/verify')
+let verify = require("../config/verify");
 
-const adminController = require ('../controllers/adminController')
+const adminController = require("../controllers/adminController");
 
-    // // Listado de administradores de la pagina
-    // router.get('/', adminController.listaAdmin);
+// Listado de administradores de la pagina ACTIVOS
+router.get("/listaAdminActivos", adminController.listaAdminActivos);
 
-    // // Crear un nuevo administrador
-    // router.post('/crearAdmin', adminController.crearAdmin);
-    
-    // // Modificar un administrador
-    // router.post('/modificarAdmin/:id', adminController.modificarAdmin);
+// Listado de administradores de la pagina INACTIVOS
+router.get("/listaAdminInactivos", adminController.listaAdminInactivos);
 
+router.get("/unAdmin/:usuario_id", adminController.unAdmin)
 
-    // Ventas mensuales
-    router.get('/ventasMensuales', adminController.ventasMensuales);
+// Crear un nuevo administrador
+router.post("/crearAdmin", adminController.crearAdmin);
 
-    router.get('/ventasDiarias', adminController.ventasDiarias)
+// Modificar un administrador
+router.post("/modificarAdmin/:usuario_id", adminController.modificarAdmin);
 
-    // // Ventas diarias
-    // router.get('/ventasDiarias',  adminController.ventasDiarias);
-    
-    module.exports= router;
+// Ventas mensuales
+router.get("/ventasMensuales", adminController.ventasMensuales);
+
+// Ventas diarias
+router.get("/ventasDiarias", adminController.ventasDiarias);
+
+module.exports = router;
