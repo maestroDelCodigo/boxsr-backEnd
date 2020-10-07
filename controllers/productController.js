@@ -7,10 +7,9 @@ productController = {};
 productController.listaProductos = (req, res) => {
 
     //let sql = `SELECT * FROM producto`;
-    let sql = `SELECT P.producto_id, P.nombre, P.tipo_producto, P.codigo_producto, P.peso, P.stock, P.deleted, P.fecha_creacion, P.precio, path as imagen_url
+    let sql = `SELECT P.producto_id, P.nombre, P.tipo_producto, P.codigo_barras, P.peso, P.stock, P.deleted, P.fecha_creacion, P.precio, path as imagen_url
     FROM producto as P
-    LEFT JOIN product_image ON P.producto_id = product_image.producto_id
-    LEFT JOIN imagen ON imagen.imagen_id = product_image.imagen_id;`;
+    LEFT JOIN imagen_producto ON P.producto_id = imagen_producto.producto_id;`;
 
     connection.query(sql, (err, result) => {
         if (err) throw err;
@@ -22,7 +21,7 @@ productController.crearProducto = (req, res) => {
 
 let nombre=req.body.nombre;
 let tipo_producto=req.body.tipo_producto;
-let codigo_producto=req.body.codigo_producto;
+let codigo_barras=req.body.codigo_barras;
 let peso=req.body.peso;
 let stock= req.body.stock;
 let deleted=req.body.deleted;
@@ -31,37 +30,30 @@ let precio= req.body.precio;
 let imagen = req.body.nombre_imagen;
     
 
-    let sql = `INSERT INTO producto (nombre,tipo_producto,codigo_producto,peso,stock,deleted,fecha_creacion,precio) 
-    VALUES ('${nombre}','${tipo_producto}', '${codigo_producto}',
+    let sql = `INSERT INTO producto (nombre,tipo_producto,codigo_barras,peso,stock,deleted,fecha_creacion,precio) 
+    VALUES ('${nombre}','${tipo_producto}', '${codigo_barras}',
     '${peso}','${stock}','${deleted}' ,'${fecha_creacion}',${precio})`;
         
     if(imagen)
     {
         connection.query(sql, (err, resultProductos) => {
-                if (err) throw err;                               
+                    if (err) throw err;                               
                 
-                let lastId = resultProductos.insertId;                
-
-                let sqlImagenes = `INSERT INTO imagen (imagen_id, path)
-                VALUES (LAST_INSERT_ID(),'${imagen}')`;
-
-                connection.query(sqlImagenes, (err, resultImages) => {
-                    if (err) throw err;
+                    let lastId = resultProductos.insertId;                
                                                     
-                    let sqlProductosImagen = `INSERT INTO product_image (producto_id, imagen_id)
-                    VALUES ('${lastId}','${lastId}')`;
+                    let sqlProductosImagen = `INSERT INTO imagen_producto (producto_id, path, imagen_id)
+                    VALUES ('${lastId}','${imagen}', '${lastId}')`;
                     
-                    connection.query(sqlProductosImagen, (err, result) => {
-                        if (err) {            
+                    connection.query(sqlProductosImagen, (err, result) => {                        
+                        if (err) {                                        
                             res.status(500).json({
                                 message: err.message
                             });
-                        }    
-                    
-                        res.json('producto creado')
-                    })                  
-                })      
-
+                        }else{
+                            res.json('producto creado');
+                        }                     
+                       
+                    })                              
                 
             })
     }else {
@@ -116,7 +108,7 @@ productController.actualizarProducto = (req, res) => {
 
     let nombre=req.body.nombre;
     let tipo_producto=req.body.tipo_producto;
-    let codigo_producto=req.body.codigo_producto;
+    let codigo_barras=req.body.codigo_barras;
     let peso=req.body.peso;
     let stock= req.body.stock;
     let deleted=req.body.deleted;
@@ -124,7 +116,7 @@ productController.actualizarProducto = (req, res) => {
     let precio=req.body.precio;
    
     let sql = `UPDATE producto SET nombre='${nombre}', tipo_producto='${tipo_producto}',
-    codigo_producto='${codigo_producto}', peso='${peso}',stock='${stock}',deleted=${deleted}, precio='${precio}' WHERE producto_id=${producto_id}`;
+    codigo_barras='${codigo_barras}', peso='${peso}',stock='${stock}',deleted=${deleted}, precio='${precio}' WHERE producto_id=${producto_id}`;
 
     connection.query(sql, (err, result) => {
         if (err) throw err;
