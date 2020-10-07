@@ -1,12 +1,17 @@
 
 const connection = require('../config/db');
-
+const { app } = require('../app.js');
 
 productController = {};
 
 productController.listaProductos = (req, res) => {
 
-    let sql = `SELECT * FROM producto`;
+    //let sql = `SELECT * FROM producto`;
+    let sql = `SELECT P.producto_id, P.nombre, P.tipo_producto, P.codigo_producto, P.peso, P.stock, P.deleted, P.fecha_creacion, P.precio, path as imagen_url
+    FROM producto as P
+    LEFT JOIN product_image ON P.producto_id = product_image.producto_id
+    LEFT JOIN imagen ON imagen.imagen_id = product_image.imagen_id;`;
+
     connection.query(sql, (err, result) => {
         if (err) throw err;
         res.json(result)
@@ -23,19 +28,48 @@ let stock= req.body.stock;
 let deleted=req.body.deleted;
 let fecha_creacion=req.body.fecha_creacion;
 let precio= req.body.precio;
-
-
+let imagen = req.body.nombre_imagen;
+    
 
     let sql = `INSERT INTO producto (nombre,tipo_producto,codigo_producto,peso,stock,deleted,fecha_creacion,precio) 
     VALUES ('${nombre}','${tipo_producto}', '${codigo_producto}',
     '${peso}','${stock}','${deleted}' ,'${fecha_creacion}',${precio})`;
+        
+    if(imagen)
+    {
+        connection.query(sql, (err, resultProductos) => {
+                if (err) throw err;                               
+                
+                let lastId = resultProductos.insertId;                
 
+                let sqlImagenes = `INSERT INTO imagen (imagen_id, path)
+                VALUES (LAST_INSERT_ID(),'${imagen}')`;
 
+                connection.query(sqlImagenes, (err, resultImages) => {
+                    if (err) throw err;
+                                                    
+                    let sqlProductosImagen = `INSERT INTO product_image (producto_id, imagen_id)
+                    VALUES ('${lastId}','${lastId}')`;
+                    
+                    connection.query(sqlProductosImagen, (err, result) => {
+                        if (err) {            
+                            res.status(500).json({
+                                message: err.message
+                            });
+                        }    
+                    
+                        res.json('producto creado')
+                    })                  
+                })      
 
-   connection.query(sql, (err, result) => {
-        if (err) throw err;
-        res.json('producto creado')
-    })
+                
+            })
+    }else {
+        connection.query(sql, (err, result) => {
+            if (err) throw err;
+            res.json('producto creado')
+        })
+    }
 }
 
 
