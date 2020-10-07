@@ -9,8 +9,7 @@ productController.listaProductos = (req, res) => {
     //let sql = `SELECT * FROM producto`;
     let sql = `SELECT P.producto_id, P.nombre, P.tipo_producto, P.codigo_producto, P.peso, P.stock, P.deleted, P.fecha_creacion, P.precio, path as imagen_url
     FROM producto as P
-    LEFT JOIN product_image ON P.producto_id = product_image.producto_id
-    LEFT JOIN imagen ON imagen.imagen_id = product_image.imagen_id;`;
+    LEFT JOIN imagen_producto ON P.producto_id = imagen_producto.producto_id;`;
 
     connection.query(sql, (err, result) => {
         if (err) throw err;
@@ -38,30 +37,23 @@ let imagen = req.body.nombre_imagen;
     if(imagen)
     {
         connection.query(sql, (err, resultProductos) => {
-                if (err) throw err;                               
+                    if (err) throw err;                               
                 
-                let lastId = resultProductos.insertId;                
-
-                let sqlImagenes = `INSERT INTO imagen (imagen_id, path)
-                VALUES (LAST_INSERT_ID(),'${imagen}')`;
-
-                connection.query(sqlImagenes, (err, resultImages) => {
-                    if (err) throw err;
+                    let lastId = resultProductos.insertId;                
                                                     
-                    let sqlProductosImagen = `INSERT INTO product_image (producto_id, imagen_id)
-                    VALUES ('${lastId}','${lastId}')`;
+                    let sqlProductosImagen = `INSERT INTO imagen_producto (producto_id, path, imagen_id)
+                    VALUES ('${lastId}','${imagen}', '${lastId}')`;
                     
-                    connection.query(sqlProductosImagen, (err, result) => {
-                        if (err) {            
+                    connection.query(sqlProductosImagen, (err, result) => {                        
+                        if (err) {                                        
                             res.status(500).json({
                                 message: err.message
                             });
-                        }    
-                    
-                        res.json('producto creado')
-                    })                  
-                })      
-
+                        }else{
+                            res.json('producto creado');
+                        }                     
+                       
+                    })                              
                 
             })
     }else {
