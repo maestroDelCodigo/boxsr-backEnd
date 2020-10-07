@@ -24,11 +24,8 @@ adminController.crearAdmin = (req, res) => {
 
   connection.query(sql, (err, result) => {
     if (err) throw err;
-<<<<<<< Updated upstream
     res.json(result);    
-=======
-    res.json(result);
->>>>>>> Stashed changes
+
   });
 };
 
