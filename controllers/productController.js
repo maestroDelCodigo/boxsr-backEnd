@@ -7,7 +7,7 @@ productController = {};
 productController.listaProductos = (req, res) => {
 
     //let sql = `SELECT * FROM producto`;
-    let sql = `SELECT P.producto_id, P.nombre, P.tipo_producto, P.codigo_producto, P.peso, P.stock, P.deleted, P.fecha_creacion, P.precio, path as imagen_url
+    let sql = `SELECT P.producto_id, P.nombre, P.tipo_producto, P.codigo_producto, P.peso, P.stock, P.deleted, P.fecha_creacion, P.precio, path as nombre_imagen
     FROM producto as P
     LEFT JOIN imagen_producto ON P.producto_id = imagen_producto.producto_id;`;
 
@@ -114,15 +114,64 @@ productController.actualizarProducto = (req, res) => {
     let deleted=req.body.deleted;
     // let fecha_creacion=req.body.fecha_creacion;
     let precio=req.body.precio;
-   
+    let imagen = req.body.nombre_imagen;
+    let imagen_url = req.body.imagen_url;
+       
     let sql = `UPDATE producto SET nombre='${nombre}', tipo_producto='${tipo_producto}',
     codigo_producto='${codigo_producto}', peso='${peso}',stock='${stock}',deleted=${deleted}, precio='${precio}' WHERE producto_id=${producto_id}`;
+ 
+    if(imagen)
+    {
+        connection.query(sql, (err, resultProductos) => {
+                    if (err) throw err;     
+                    
+                    let sqlDeleteImage = `DELETE FROM imagen_producto WHERE producto_id = ${producto_id}`;                    
 
-    connection.query(sql, (err, result) => {
-        if (err) throw err;
-        res.json('producto actualizado');
+                    connection.query(sqlDeleteImage, (err, result) => {                        
+                        if (err) throw err;                                                                                  
 
-})
+                        let sqlProductosImagen = `INSERT INTO imagen_producto (producto_id, path, imagen_id)
+                        VALUES ('${producto_id}','${imagen}', LAST_INSERT_ID())`;                      
+                        
+                        connection.query(sqlProductosImagen, (err, result) => {                        
+                            if (err) {                                        
+                                res.status(500).json({
+                                    message: err.message
+                                });
+                            }else{
+                                res.json('producto actualizado');
+                            }                     
+                        
+                        })                                                                                              
+                    })                                                               
+                
+            })
+            //no tengo imagen pero tenia antes, la tengo q borrar.
+    }else if(!imagen && imagen_url){
+
+        connection.query(sql, (err, resultProductos) => {
+            if (err) throw err;     
+            
+            let sqlDeleteImage = `DELETE FROM imagen_producto WHERE producto_id = ${producto_id}`;
+           
+            connection.query(sqlDeleteImage, (err, result) => {  
+                if (err) {                                        
+                    res.status(500).json({
+                        message: err.message
+                    });
+                }else{
+                    res.json('producto actualizado');
+                }  
+            });
+        });
+    }
+    else
+    {
+        connection.query(sql, (err, result) => {
+            if (err) throw err;
+            res.json('producto actualizado')
+        })
+    }
 }
 
 
