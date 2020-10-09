@@ -24,4 +24,7 @@ router.get("/ventasMensuales", adminController.ventasMensuales);
 // Ventas diarias
 router.get("/ventasDiarias", adminController.ventasDiarias);
 
+//Ver sugerencias
+router.get('/verSugerencias/:id',adminController.verSugerencias);
+
 module.exports = router;
