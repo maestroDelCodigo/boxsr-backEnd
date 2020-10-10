@@ -17,6 +17,16 @@ productController.listaProductos = (req, res) => {
     })
 }
 
+productController.getProducto = (req, res) => {
+
+    let sql = `SELECT * from producto where producto_id = ${req.params.id}`;
+
+    connection.query(sql, (err, result) => {
+        if (err) throw err;
+        res.json(result);
+    });
+}
+
 productController.crearProducto = (req, res) => {
 
 let nombre=req.body.nombre;
