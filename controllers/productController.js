@@ -19,11 +19,13 @@ productController.listaProductos = (req, res) => {
 
 productController.getProducto = (req, res) => {
 
-    let sql = `SELECT * from producto where producto_id = ${req.params.id}`;
+    let sql = `SELECT P.producto_id, P.nombre, P.tipo_producto, P.codigo_producto, P.peso, P.stock, P.deleted, P.fecha_creacion, P.precio, path as nombre_imagen
+    FROM producto as P
+    LEFT JOIN imagen_producto ON P.producto_id = imagen_producto.producto_id where P.producto_id = ${req.params.id}`;
 
     connection.query(sql, (err, result) => {
         if (err) throw err;
-        res.json(result);
+        res.json(result[0]);
     });
 }
 
