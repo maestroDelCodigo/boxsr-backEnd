@@ -10,14 +10,14 @@ const usuarioController = require('../controllers/usuarioController');
     router.post('/crearUsuario', validaciones.crearUsuario, usuarioController.crearUsuario);
 
     //Retrieve all user
-    router.get('/', usuarioController.lista);
+    router.get('/listaUsuarios', usuarioController.lista);
 
-    router.get('/:usuarioId', usuarioController.buscarUsuario);
-
+    router.get('/buscarUsuario/:usuario_id', usuarioController.buscarUsuario);
+    // Desactivar usuario
     router.post('/desactivarUsuario', usuarioController.desactivarUsuario);
     
     // Update a user with userId
-    router.post('/:usuarioId', validaciones.modificarUsuario, usuarioController.modificar);
+    router.post('/modificarUsuario/:usuario_id', usuarioController.modificarUsuario);
 
     // Delete a user with usereId
     // // router.delete('/:usuarioId', usuarioController.borrar);

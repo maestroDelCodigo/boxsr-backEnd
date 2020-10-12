@@ -52,7 +52,6 @@ usuarioController.crearUsuario = (req, res) => {
         res.status(409).json({ message: "Ese email ya existe" });
     }  
     else{
-        console.log(" dentro del");
     let sql = `INSERT INTO usuario (nombre, apellidos, email, password, fecha_creacion, 
     fecha_nacimiento,  rol, deleted) VALUES ('${nombre}','${apellidos}','${email}','${password}', '${fecha_creacion}', 
     '${fecha_nacimiento}', '${rol}', ${deleted})`;
@@ -90,7 +89,8 @@ usuarioController.lista = (req, res) => {
 };
 
 usuarioController.buscarUsuario = (req, res) => {
-  let sql = `SELECT * from usuario where usuario_id = ${req.params.usuarioId} and deleted <> 1`;
+  let usuario_id = req.params.usuario_id
+  let sql = `SELECT * from usuario JOIN direccion on usuario.usuario_id = direccion.usuario_id WHERE usuario.usuario_id =${usuario_id}` ;
 
   connection.query(sql, (err, result) => {
     if (err) {
@@ -98,42 +98,55 @@ usuarioController.buscarUsuario = (req, res) => {
         message: err.message,
       });
     }
-    res.json(result);
+    res.json(result[0]);
   });
 };
 // Modificar datos de un usuario
-usuarioController.modificar = (req, res) => {
+usuarioController.modificarUsuario = (req, res) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
 
-  let usuario_id = req.params.usuarioId;
+  let usuario_id = req.params.usuario_id;
   let nombre = req.body.nombre;
   let apellidos = req.body.apellidos;
   let email = req.body.email;
-  let fecha_creacion = req.body.fecha_creacion;
-  let registrado = req.body.registrado;
-  let suscriptor = req.body.suscriptor;
+  let direccion = req.body.direccion;
+  let codigo_postal = req.body.codigo_postal;
+  let provincia = req.body.provincia; 
+  let poblacion = req.body.poblacion;
   let password = req.body.password;
-  let rol = req.body.rol;
-  let deleted = req.body.deleted;
-  let fecha_nacimiento = req.body.fecha_nacimiento;
+  let pais = "España";
+  let fecha_nacimiento1 = req.body.fecha_nacimiento;
+  let fecha_nacimiento2 = Date.parse(fecha_nacimiento1);
+  let date2 = new Date(fecha_nacimiento2);
+  let fecha_nacimiento =
+  date2.getFullYear() +
+  "-" +
+  parseInt(date2.getMonth() + 1) +
+  "-" +
+  0 +
+  date2.getDate() +
+  "%";
 
-  let sql = `UPDATE usuario SET nombre = '${nombre}', apellidos = '${apellidos}', email = '${email}' ,fecha_creacion = '${fecha_creacion}', registrado ='${registrado}', suscriptor = '${suscriptor}' , password = '${password}', rol ='${rol}' , deleted = '${deleted}' ,fecha_nacimiento = '${fecha_nacimiento}'
-    WHERE usuario_id = ${usuario_id} and deleted <> 1`;
-
-  connection.query(sql, (err, result) => {
-    if (err) {
-      res.status(500).json({
-        message: err.message,
+  let sql = `UPDATE usuario SET nombre ='${nombre}', apellidos='${apellidos}', email='${email}', password='${password}',fecha_nacimiento='${fecha_nacimiento}' WHERE usuario_id = ${usuario_id}`;
+    connection.query(sql, (err, result4) => {
+        console.log(result4);
+        if (err) {
+          res.status(500).json({
+            message: "Fallo al registrar usuario",
+          });
+        }
+        let sql2 = `UPDATE direccion SET direccion='${direccion}', codigo_postal='${codigo_postal}', poblacion='${poblacion}', provincia='${provincia}', pais='${pais}'`;
+        connection.query(sql2, (err, result2) => {
+          if (err) throw err;
+          res.json(result2);
+        });
       });
     }
-    //envio un json como respuesta
-    res.json(result);
-  });
-};
+  
 
 // Activar o desactivar un usuario
 usuarioController.desactivarUsuario = (req, res) => {
