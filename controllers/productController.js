@@ -1,4 +1,3 @@
-
 const connection = require('../config/db');
 const { app } = require('../app.js');
 
