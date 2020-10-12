@@ -6,7 +6,8 @@ productController = {};
 productController.listaProductos = (req, res) => {
 
     //let sql = `SELECT * FROM producto`;
-    let sql = `SELECT P.producto_id, P.nombre, P.tipo_producto, P.codigo_producto, P.peso, P.stock, P.deleted, P.fecha_creacion, P.precio, path as nombre_imagen
+    let sql = `SELECT P.producto_id, P.nombre, P.tipo_producto, P.codigo_producto, P.peso, P.stock, P.deleted, P.fecha_creacion, P.precio,
+    P.descripcion, P.descripcion_resumen, P.descripcion_sirve, P.descripcion_usa, P.descripcion_ingredientes, path as nombre_imagen
     FROM producto as P
     LEFT JOIN imagen_producto ON P.producto_id = imagen_producto.producto_id;`;
 
@@ -18,7 +19,7 @@ productController.listaProductos = (req, res) => {
 
 productController.getProducto = (req, res) => {
 
-    let sql = `SELECT P.producto_id, P.nombre, P.tipo_producto, P.codigo_producto, P.peso, P.stock, P.deleted, P.fecha_creacion, P.precio, path as nombre_imagen
+    let sql = `SELECT P.producto_id, P.nombre, P.tipo_producto, P.codigo_producto, P.peso, P.stock, P.deleted, P.fecha_creacion, P.precio, P.descripcion, P.descripcion_resumen, P.descripcion_sirve, P.descripcion_usa, P.descripcion_ingredientes, path as nombre_imagen
     FROM producto as P
     LEFT JOIN imagen_producto ON P.producto_id = imagen_producto.producto_id where P.producto_id = ${req.params.id}`;
 
@@ -39,11 +40,16 @@ let deleted=req.body.deleted;
 let fecha_creacion=req.body.fecha_creacion;
 let precio= req.body.precio;
 let imagen = req.body.nombre_imagen;
+let descripcion = req.body.descripcion;
+let descripcion_resumen = req.body.descripcion_resumen;
+let descripcion_sirve = req.body.descripcion_sirve;
+let descripcion_usa = req.body.descripcion_usa;
+let descripcion_ingredientes = req.body.descripcion_ingredientes;
     
 
-    let sql = `INSERT INTO producto (nombre,tipo_producto,codigo_producto,peso,stock,deleted,fecha_creacion,precio) 
+    let sql = `INSERT INTO producto (nombre,tipo_producto,codigo_producto,peso,stock,deleted,fecha_creacion,precio,descripcion, descripcion_resumen, descripcion_sirve, descripcion_usa, descripcion_ingredientes) 
     VALUES ('${nombre}','${tipo_producto}', '${codigo_producto}',
-    '${peso}','${stock}','${deleted}' ,'${fecha_creacion}',${precio})`;
+    '${peso}','${stock}','${deleted}' ,'${fecha_creacion}',${precio}, '${descripcion}', '${descripcion_resumen}', '${descripcion_sirve}', '${descripcion_usa}', '${descripcion_ingredientes}')`;
         
     if(imagen)
     {
@@ -52,8 +58,8 @@ let imagen = req.body.nombre_imagen;
                 
                     let lastId = resultProductos.insertId;                
                                                     
-                    let sqlProductosImagen = `INSERT INTO imagen_producto (producto_id, path, imagen_id)
-                    VALUES ('${lastId}','${imagen}', '${lastId}')`;
+                    let sqlProductosImagen = `INSERT INTO imagen_producto (producto_id, path)
+                    VALUES ('${lastId}','${imagen}')`;
                     
                     connection.query(sqlProductosImagen, (err, result) => {                        
                         if (err) {                                        
@@ -127,9 +133,15 @@ productController.actualizarProducto = (req, res) => {
     let precio=req.body.precio;
     let imagen = req.body.nombre_imagen;
     let imagen_url = req.body.imagen_url;
+
+    let descripcion = req.body.descripcion;
+    let descripcion_resumen = req.body.descripcion_resumen;
+    let descripcion_sirve = req.body.descripcion_sirve;
+    let descripcion_usa = req.body.descripcion_usa;
+    let descripcion_ingredientes = req.body.descripcion_ingredientes;
        
     let sql = `UPDATE producto SET nombre='${nombre}', tipo_producto='${tipo_producto}',
-    codigo_producto='${codigo_producto}', peso='${peso}',stock='${stock}',deleted=${deleted}, precio='${precio}' WHERE producto_id=${producto_id}`;
+    codigo_producto='${codigo_producto}', peso='${peso}',stock='${stock}',deleted=${deleted}, precio='${precio}', descripcion = '${descripcion}' , descripcion_resumen = '${descripcion_resumen}', descripcion_sirve = '${descripcion_sirve}', descripcion_usa = '${descripcion_usa}', descripcion_ingredientes = '${descripcion_ingredientes}' WHERE producto_id=${producto_id}`;
  
     if(imagen)
     {
@@ -141,8 +153,8 @@ productController.actualizarProducto = (req, res) => {
                     connection.query(sqlDeleteImage, (err, result) => {                        
                         if (err) throw err;                                                                                  
 
-                        let sqlProductosImagen = `INSERT INTO imagen_producto (producto_id, path, imagen_id)
-                        VALUES ('${producto_id}','${imagen}', LAST_INSERT_ID())`;                      
+                        let sqlProductosImagen = `INSERT INTO imagen_producto (producto_id, path)
+                        VALUES ('${producto_id}','${imagen}')`;                      
                         
                         connection.query(sqlProductosImagen, (err, result) => {                        
                             if (err) {                                        
