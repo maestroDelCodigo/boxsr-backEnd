@@ -7,7 +7,7 @@ const usuarioController = require('../controllers/usuarioController');
     router.post('/login', validaciones.loginUsuario, usuarioController.login);
 
     // Create a new user
-    router.post('/', validaciones.crearUsuario, usuarioController.crear);
+    router.post('/crearUsuario', validaciones.crearUsuario, usuarioController.crearUsuario);
 
     //Retrieve all user
     router.get('/', usuarioController.lista);
