@@ -22,6 +22,9 @@ router.get("/ventasMensuales", adminController.ventasMensuales);
 // Ventas diarias
 router.get("/ventasDiarias", adminController.ventasDiarias);
 
+
+
+
 //Desactivar un administrador
 router.post('/desactivarAdmin/:id', adminController.desactivarAdmin);
 

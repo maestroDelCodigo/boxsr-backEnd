@@ -100,6 +100,19 @@ fecha_pedido LIKE '${fechaDiaria}'  `;
     res.json(result);
   });
 };
+
+adminController.unAdmin = (req, res) => {
+  let usuario_id = req.params.usuario_id
+  let sql = `SELECT * FROM usuario WHERE usuario_id = ${usuario_id}`
+
+  connection.query(sql, (err, result)=>{
+    if(err)throw err;
+    res.json(result)
+  })
+}
+
+
+
 // adminController.unAdmin = (req, res) => {
 //   let usuario_id = req.params.usuario_id
 //   let sql = `SELECT * FROM usuario WHERE usuario_id = ${usuario_id}`
@@ -132,5 +145,6 @@ fecha_pedido LIKE '${fechaDiaria}'  `;
         }
  
  }
+
 
 module.exports = adminController;
