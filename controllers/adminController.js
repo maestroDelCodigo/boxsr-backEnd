@@ -109,21 +109,7 @@ adminController.unAdmin = (req, res) => {
     res.json(result)
   })
 }
-//ver sugerencias
-adminController.verSugerencias = (req,res) => {
-  let usuario_id=req.params.id;
 
-  let sql = `SELECT nombre,apellidos,mensaje FROM sugerencias
-     JOIN usuario ON sugerencias.usuario_id = usuario.usuario_id
-     WHERE usuario.usuario_id = '${usuario_id}'`;
-
-
-
-  connection.query(sql, (err, result) => {
-    if (err) throw err;
-    res.json(result);
-})
-}
 
 
 module.exports = adminController;

@@ -53,7 +53,7 @@ app.use('/usuarios', usuarioRouter);
 
 app.use('/file', fileRouter);
 
-app.use('/contacto',sugerenciaRouter);
+app.use('/sugerencia',sugerenciaRouter);
 
 
 // catch 404 and forward to error handler
