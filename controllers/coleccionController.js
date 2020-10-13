@@ -13,9 +13,13 @@ let video_url=req.body.video_url;
 let precio_rebajado=req.body.precio_rebajado;
 let precio_original= req.body.precio_original;
 let productos_asociados = req.body.productos_asociados;
+let descripcion = req.body.descripcion;
+let descripcion_sirve = req.body.descripcion_sirve;
+let descripcion_usa = req.body.descripcion_usa;
+let descripcion_ingredientes = req.body.descripcion_ingredientes;
 
-let sql = `INSERT INTO coleccion (nombre,deleted,video_url,precio_rebajado,precio_original)
- VALUES ('${nombre}','${deleted}','${video_url}',${precio_rebajado}, ${precio_original})`;
+let sql = `INSERT INTO coleccion (nombre,deleted,video_url,precio_rebajado,precio_original, descripcion, descripcion_sirve, descripcion_usa, descripcion_ingredientes)
+ VALUES ('${nombre}','${deleted}','${video_url}',${precio_rebajado}, ${precio_original}, '${descripcion}', '${descripcion_sirve}', '${descripcion_usa}', '${descripcion_ingredientes}')`;
 
   // https://codeburst.io/node-js-mysql-and-async-await-6fb25b01b628
  connection.query(sql, (err, result) => {
@@ -76,15 +80,19 @@ coleccionController.modificarColeccion=(req,res)=>{
     let precio_rebajado=req.body.precio_rebajado;
     let precio_original= req.body.precio_original;
     let productos_asociados = req.body.productos_asociados;
+    let descripcion = req.body.descripcion;
+    let descripcion_sirve = req.body.descripcion_sirve;
+    let descripcion_usa = req.body.descripcion_usa;
+    let descripcion_ingredientes = req.body.descripcion_ingredientes;
     
   
     let sql = `UPDATE coleccion SET nombre ='${nombre}', deleted=${deleted},
-     video_url='${video_url}', precio_rebajado=${precio_rebajado}, precio_original=${precio_original} 
+     video_url='${video_url}', precio_rebajado=${precio_rebajado}, precio_original=${precio_original}, descripcion = '${descripcion}', descripcion_sirve = '${descripcion_sirve}', descripcion_usa = '${descripcion_usa}', descripcion_ingredientes = '${descripcion_ingredientes}'
      WHERE coleccion_id =${coleccion_id}`;
 
     connection.query(sql, (err, result) => {
         if (err) { 
-            res.status(500).json({
+            return res.status(500).json({
             message: err.message
             });
         }
@@ -95,7 +103,7 @@ coleccionController.modificarColeccion=(req,res)=>{
 
         connection.query(sqlBorrarAsociados, (err, result) => {
             if (err) {            
-                res.status(500).json({
+                return res.status(500).json({
                     message: err.message
                 });
             }

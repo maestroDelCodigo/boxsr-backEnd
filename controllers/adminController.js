@@ -100,6 +100,7 @@ fecha_pedido LIKE '${fechaDiaria}'  `;
     res.json(result);
   });
 };
+
 adminController.unAdmin = (req, res) => {
   let usuario_id = req.params.usuario_id
   let sql = `SELECT * FROM usuario WHERE usuario_id = ${usuario_id}`
@@ -110,6 +111,40 @@ adminController.unAdmin = (req, res) => {
   })
 }
 
+
+
+// adminController.unAdmin = (req, res) => {
+//   let usuario_id = req.params.usuario_id
+//   let sql = `SELECT * FROM usuario WHERE usuario_id = ${usuario_id}`
+
+//   connection.query(sql, (err, result)=>{
+//     if(err)throw err;
+//     res.json(result)
+//   });
+
+  adminController.desactivarAdmin = (req, res) => {
+    let usuario_id = req.params.id;
+    let desactivarAdmin = req.body.deleted;
+        if (desactivarAdmin == false){
+            let sql = `UPDATE  usuario  SET deleted = 0
+            WHERE usuario_id=' ${usuario_id}'`
+            connection.query(sql, (err, result) => {
+                  if (err) throw err;
+        res.json('Admin activo');
+            }) 
+           
+        }
+        else{
+            let sql = `UPDATE  usuario  SET deleted = 1
+          WHERE usuario_id= '${usuario_id}'`
+          connection.query(sql, (err, result) => {
+            if (err) throw err;
+        res.json('Admin inactivo');
+            })
+           
+        }
+ 
+ }
 
 
 module.exports = adminController;

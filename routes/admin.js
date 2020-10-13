@@ -10,8 +10,6 @@ router.get("/listaAdminActivos", adminController.listaAdminActivos);
 // Listado de administradores de la pagina INACTIVOS
 router.get("/listaAdminInactivos", adminController.listaAdminInactivos);
 
-router.get("/unAdmin/:usuario_id", adminController.unAdmin)
-
 // Crear un nuevo administrador
 router.post("/crearAdmin", adminController.crearAdmin);
 
@@ -25,5 +23,9 @@ router.get("/ventasMensuales", adminController.ventasMensuales);
 router.get("/ventasDiarias", adminController.ventasDiarias);
 
 
+
+
+//Desactivar un administrador
+router.post('/desactivarAdmin/:id', adminController.desactivarAdmin);
 
 module.exports = router;
