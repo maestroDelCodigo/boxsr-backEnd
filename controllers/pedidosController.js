@@ -74,6 +74,48 @@ pedidosController.modificarPedido= (req, res) => {
 }
 
 
+pedidosController.obtenerCantidad= (req, res) => {
+
+    let pedido_id=req.params.id;
+
+   
+    let sql = `select sum(cantidad) as cantidad from pedido P
+    inner join producto_pedido ON P.pedido_id = producto_pedido.pedido_id
+    inner join producto ON producto_pedido.producto_id = producto.producto_id
+    where P.pedido_id = ${pedido_id}`;
+
+    connection.query(sql, (err, result) => {
+        if (err) {
+            res.status(500).json({
+                message: err.message
+            });
+        }
+        else{
+            res.json(result);
+        }
+    })
+}
+
+pedidosController.obtenerResumen= (req, res) => {
+    let pedido_id=req.params.id;
+    
+    let sql = `select sum(cantidad) as cantidad, P.estado_pago, P.forma_entrega, P.iva, P.total_pedido, P.estado_preparacion, P.fecha_pedido, P.notas from pedido P
+    inner join producto_pedido ON P.pedido_id = producto_pedido.pedido_id
+    inner join producto ON producto_pedido.producto_id = producto.producto_id
+    where P.pedido_id = ${pedido_id}`;
+
+    connection.query(sql, (err, result) => {
+        if (err) {
+            res.status(500).json({
+                message: err.message
+            });
+        }
+        else{
+            res.json(result);
+        }
+    })
+}
+
 
 
 // pedidosController.eliminarPedido= (req, res) => {
