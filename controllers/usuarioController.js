@@ -218,7 +218,6 @@ usuarioController.login = (req, res) => {
         message: err.message,
       });
     }
-    //envio un json como respuesta
     res.json(result[0]);
   });
 };
