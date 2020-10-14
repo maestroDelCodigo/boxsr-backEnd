@@ -31,7 +31,7 @@ let sql = `INSERT INTO pedido (estado_pago,forma_entrega,iva,total_pedido,estado
 
 pedidosController.listaPedidos = (req, res) => {
 
-let sql= `select * from pedido`;
+let sql= `SELECT * FROM pedido JOIN usuario ON usuario.usuario_id = pedido.usuario_id`;
 
 connection.query(sql ,(err,result) => {
     if(err) throw err;
@@ -40,9 +40,9 @@ connection.query(sql ,(err,result) => {
 }
 
 
-pedidosController.buscarPedido= (req, res) => {
+pedidosController.detallePedido= (req, res) => {
 
-    let sql=`SELECT * FROM pedido where pedido_id= ${req.params.id}`;
+    let sql=`SELECT * FROM pedido JOIN usuario ON usuario.usuario_id = pedido.usuario_id WHERE pedido_id= ${req.params.id}`;
 
     connection.query(sql,(err,result)=>{
         if(err) throw err;

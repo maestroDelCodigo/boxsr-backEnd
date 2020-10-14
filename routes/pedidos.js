@@ -6,9 +6,9 @@ const pedidosController = require('../controllers/pedidosController')
  
     router.post('/crearPedido', pedidosController.crearPedido);
 
-    router.get('/', pedidosController.listaPedidos);
+    router.get('/listaPedidos', pedidosController.listaPedidos);
 
-    router.get('/buscarPedido/:id', pedidosController.buscarPedido);
+    router.get('/detallePedido/:id', pedidosController.detallePedido);
     
     router.post('/modificarPedido/:id', pedidosController.modificarPedido);
     
