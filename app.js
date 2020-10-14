@@ -13,6 +13,8 @@ var usuarioRouter =  require('./routes/usuario');
 var adminRouter = require('./routes/admin')
 var fileRouter = require('./routes/file');
 var sugerenciaRouter= require('./routes/sugerencia');
+var checkoutRouter= require('./routes/checkout');
+
 
 var app = express();
 
@@ -54,6 +56,8 @@ app.use('/usuarios', usuarioRouter);
 app.use('/file', fileRouter);
 
 app.use('/sugerencia',sugerenciaRouter);
+app.use('/checkout', checkoutRouter);
+
 
 
 // catch 404 and forward to error handler
