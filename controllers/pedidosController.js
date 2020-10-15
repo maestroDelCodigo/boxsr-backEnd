@@ -96,12 +96,15 @@ pedidosController.obtenerCantidad= (req, res) => {
     })
 }
 
-pedidosController.obtenerResumen= (req, res) => {
-    let pedido_id=req.params.id;
-    
-    let sql = `select sum(cantidad) as cantidad, P.estado_pago, P.forma_entrega, P.iva, P.total_pedido, P.estado_preparacion, P.fecha_pedido, P.notas from pedido P
+pedidosController.obtenerDetalle= (req, res) => {
+    let pedido_id=req.params.id;    
+
+    let sql = `select sum(cantidad) as cantidad, P.estado_pago, P.forma_entrega, P.iva, P.total_pedido, P.estado_preparacion, P.fecha_pedido, P.notas , 
+	usuario.nombre, usuario.apellidos, usuario.email, usuario.registrado, usuario.suscriptor, usuario.usuario_id
+    from pedido P
     inner join producto_pedido ON P.pedido_id = producto_pedido.pedido_id
     inner join producto ON producto_pedido.producto_id = producto.producto_id
+    inner join usuario ON P.usuario_id = usuario.usuario_id
     where P.pedido_id = ${pedido_id}`;
 
     connection.query(sql, (err, result) => {
