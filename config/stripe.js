@@ -4,7 +4,7 @@ const stripe = require('stripe')(stripeSecretKey);
 const payment = async (req, res, next) => {
   try {
     const charge = await stripe.charges.create({
-      amount: 3000,
+      amount: req.body.totalPedido * 100,
       currency: 'eur',
       source: req.body.id,
 

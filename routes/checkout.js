@@ -7,5 +7,7 @@ const router = express.Router();
 
 router.post('/', [payment, restarStock], checkoutController.submitPayment);
 
+router.get('/buscarUsuario/:usuario_id', checkoutController.buscarUsuario);
+
 module.exports = router;
 
