@@ -14,7 +14,7 @@ const pedidosController = require('../controllers/pedidosController')
 
     router.get('/obtenerCantidad/:id', pedidosController.obtenerCantidad);
 
-    router.post('/obtenerResumen/:id', pedidosController.obtenerDetalle);
+    router.get('/obtenerDetalle/:id', pedidosController.obtenerDetalle);
     
     // router.post('/eliminarPedido/:id', pedidosController.eliminarPedido);
 
