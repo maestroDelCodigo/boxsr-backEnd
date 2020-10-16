@@ -107,6 +107,76 @@ pedidosController.modificarPedido= (req, res) => {
 }
 
 
+pedidosController.obtenerCantidad= (req, res) => {
+
+    let pedido_id=req.params.id;
+
+   
+    let sql = `select sum(cantidad) as cantidad from pedido P
+    inner join producto_pedido ON P.pedido_id = producto_pedido.pedido_id
+    inner join producto ON producto_pedido.producto_id = producto.producto_id
+    where P.pedido_id = ${pedido_id}`;
+
+    connection.query(sql, (err, result) => {
+        if (err) {
+            res.status(500).json({
+                message: err.message
+            });
+        }
+        else{
+            res.json(result);
+        }
+    })
+}
+
+pedidosController.obtenerDetalle= (req, res) => {
+    let pedido_id=req.params.id;    
+
+    let sql = `select sum(cantidad) as cantidad, P.estado_pago, P.forma_entrega, P.iva, P.total_pedido, P.estado_preparacion, P.fecha_pedido, P.notas , 
+	usuario.nombre, usuario.apellidos, usuario.email, usuario.registrado, usuario.suscriptor, usuario.usuario_id
+    from pedido P
+    inner join producto_pedido ON P.pedido_id = producto_pedido.pedido_id
+    inner join producto ON producto_pedido.producto_id = producto.producto_id
+    inner join usuario ON P.usuario_id = usuario.usuario_id
+    where P.pedido_id = ${pedido_id}`;
+
+    connection.query(sql, (err, result) => {
+        if (err) {
+            res.status(500).json({
+                message: err.message
+            });
+        }
+        else{
+            res.json(result);
+        }
+    })
+}
+
+pedidosController.obtenerProductosPedido= (req, res) => {
+    let pedido_id=req.params.id;    
+
+    let sql = `select P.producto_id, P.nombre, P.tipo_producto, P.codigo_producto, P.peso , P.stock , P.deleted, 
+    P.fecha_creacion, P.precio, P.descripcion, P.descripcion_resumen, P.descripcion_sirve, 
+    P.descripcion_usa, P.descripcion_ingredientes
+    from producto P
+    inner join producto_pedido ON P.producto_id = producto_pedido.producto_id    
+    inner join pedido ON pedido.pedido_id = producto_pedido.pedido_id
+    where pedido.pedido_id = ${pedido_id}`;
+
+    connection.query(sql, (err, result) => {
+        if (err) {
+            res.status(500).json({
+                message: err.message
+            });
+        }
+        else{
+            res.json(result);
+        }
+    })
+}
+
+
+
 
 
 // pedidosController.eliminarPedido= (req, res) => {

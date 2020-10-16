@@ -1,6 +1,7 @@
 const util = require("util");
 const multer = require("multer");
-const maxSize = 2 * 1024 * 1024;
+// ADD THIS LINE to increase file size limit to 1GB
+const maxSize = 1 * 1024 * 1024 * 1024;
 
 // https://bezkoder.com/node-js-express-file-upload/
 
@@ -10,7 +11,8 @@ let storage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     console.log(file.originalname);
-    cb(null, file.originalname);
+    let name = file.originalname.replace(/\s/g, '');
+    cb(null, name);
   },
 });
 

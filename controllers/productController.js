@@ -39,7 +39,7 @@ let stock= req.body.stock;
 let deleted=req.body.deleted;
 let fecha_creacion=req.body.fecha_creacion;
 let precio= req.body.precio;
-let imagen = req.body.nombre_imagen;
+let imagen = req.body.nombre_imagen.replace(/\s/g, '');
 let descripcion = req.body.descripcion;
 let descripcion_resumen = req.body.descripcion_resumen;
 let descripcion_sirve = req.body.descripcion_sirve;
@@ -131,7 +131,7 @@ productController.actualizarProducto = (req, res) => {
     let deleted=req.body.deleted;
     // let fecha_creacion=req.body.fecha_creacion;
     let precio=req.body.precio;
-    let imagen = req.body.nombre_imagen;
+    let imagen = req.body.nombre_imagen.replace(/\s/g, '');
     let imagen_url = req.body.imagen_url;
 
     let descripcion = req.body.descripcion;
