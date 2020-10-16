@@ -31,14 +31,47 @@ let sql = `INSERT INTO pedido (estado_pago,forma_entrega,iva,total_pedido,estado
 
 pedidosController.listaPedidos = (req, res) => {
 
-let sql= `select * from pedido`;
+    let sql=`SELECT * FROM pedido JOIN usuario ON usuario.usuario_id = pedido.usuario_id`;
 
-connection.query(sql ,(err,result) => {
+    connection.query(sql ,(err,result) => {
     if(err) throw err;
     res.json(result);
+    //console.log(result)
     }) 
 }
+pedidosController.obtenerDetalle= (req, res) => {
+    let pedido_id=req.body.id;
 
+    let sql = `select sum(cantidad) as cantidad, P.estado_pago, P.forma_entrega, P.iva, P.total_pedido, P.estado_preparacion, P.fecha_pedido, P.notas , 
+    usuario.nombre, usuario.apellidos, usuario.email, usuario.registrado, usuario.suscriptor, usuario.usuario_id
+    from pedido P
+    inner join producto_pedido ON P.pedido_id = producto_pedido.pedido_id
+    inner join producto ON producto_pedido.producto_id = producto.producto_id
+    inner join usuario ON P.usuario_id = usuario.usuario_id
+    where P.pedido_id = ${pedido_id}`;
+
+    connection.query(sql, (err, result) => {
+        if (err) {
+            res.status(500).json({
+                message: err.message
+            });
+        }
+        else{
+            console.log(result)
+            res.json(result);
+        }
+    })
+
+}
+pedidosController.detallePedido= (req, res) => {
+
+    let sql=`SELECT * FROM pedido JOIN usuario ON usuario.usuario_id = pedido.usuario_id WHERE pedido_id= ${req.params.id}`;
+
+    connection.query(sql,(err,result)=>{
+        if(err) throw err;
+        res.json(result);
+    })
+}
 
 pedidosController.buscarPedido= (req, res) => {
 

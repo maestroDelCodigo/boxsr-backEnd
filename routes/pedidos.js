@@ -13,5 +13,12 @@ const pedidosController = require('../controllers/pedidosController')
     router.post('/modificarPedido/:id', pedidosController.modificarPedido);
     
     // router.post('/eliminarPedido/:id', pedidosController.eliminarPedido);
+    router.get('/listaPedidos', pedidosController.listaPedidos);
+
+    router.get('/detallePedido/:id', pedidosController.detallePedido);
+
+
+
+    router.post('/obtenerDetalle', pedidosController.obtenerDetalle);
 
     module.exports= router;
