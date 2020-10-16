@@ -17,7 +17,7 @@ let descripcion = req.body.descripcion;
 let descripcion_sirve = req.body.descripcion_sirve;
 let descripcion_usa = req.body.descripcion_usa;
 let descripcion_ingredientes = req.body.descripcion_ingredientes;
-let imagen = req.body.nombre_imagen;
+let imagen = req.body.nombre_imagen.replace(/\s/g, '');
 
 let sql = `INSERT INTO coleccion (nombre,deleted,video_url,precio_rebajado,precio_original, descripcion, descripcion_sirve, descripcion_usa, descripcion_ingredientes)
  VALUES ('${nombre}','${deleted}','${video_url}',${precio_rebajado}, ${precio_original}, '${descripcion}', '${descripcion_sirve}', '${descripcion_usa}', '${descripcion_ingredientes}')`;
@@ -137,7 +137,7 @@ coleccionController.modificarColeccion=(req,res)=>{
     let descripcion_usa = req.body.descripcion_usa;
     let descripcion_ingredientes = req.body.descripcion_ingredientes;
 
-    let imagen = req.body.nombre_imagen;
+    let imagen = req.body.nombre_imagen.replace(/\s/g, '');
     let imagen_url = req.body.imagen_url;
     
   
