@@ -119,6 +119,31 @@ pedidosController.obtenerDetalle= (req, res) => {
     })
 }
 
+pedidosController.obtenerProductosPedido= (req, res) => {
+    let pedido_id=req.params.id;    
+
+    let sql = `select P.producto_id, P.nombre, P.tipo_producto, P.codigo_producto, P.peso , P.stock , P.deleted, 
+    P.fecha_creacion, P.precio, P.descripcion, P.descripcion_resumen, P.descripcion_sirve, 
+    P.descripcion_usa, P.descripcion_ingredientes
+    from producto P
+    inner join producto_pedido ON P.producto_id = producto_pedido.producto_id    
+    inner join pedido ON pedido.pedido_id = producto_pedido.pedido_id
+    where pedido.pedido_id = ${pedido_id}`;
+
+    connection.query(sql, (err, result) => {
+        if (err) {
+            res.status(500).json({
+                message: err.message
+            });
+        }
+        else{
+            res.json(result);
+        }
+    })
+}
+
+
+
 
 
 // pedidosController.eliminarPedido= (req, res) => {
