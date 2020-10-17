@@ -113,11 +113,11 @@ coleccionController.buscarColeccion=(req,res)=>{
     let sql = `SELECT C.coleccion_id, C.nombre, C.deleted, C.video_url, C.precio_rebajado, C.precio_original, C.descripcion, C.descripcion_sirve, C.descripcion_usa, C.descripcion_ingredientes, path as nombre_imagen
     FROM coleccion as C
     LEFT JOIN imagen_coleccion ON C.coleccion_id = imagen_coleccion.coleccion_id
-    where coleccion_id = ${req.params.id}`;
+    where C.coleccion_id = ${req.params.id}`;
 
     connection.query(sql, (err, result) => {
         if (err) throw err;
-       res.json('Colección')
+       res.json(result[0]);
     })
 
  }
