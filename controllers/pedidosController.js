@@ -98,20 +98,26 @@ pedidosController.obtenerResumen = (req, res) => {
 };
 
 pedidosController.guardarPedido = (req, res) => {
-//   var pedidoBaseDeDatos = [
-//     [(producto_id = req.body.producto_id)],
-//     [(pedido_id = req.body.pedido_id)],
-//     [(cantidad = req.body.cantidad)],
-//   ];
+let total_pedido = req.body.total_pedido;
+let notas ="TODO"
+let usuario_id = req.body.usuario_id;
+let sql2 = `INSERT INTO pedido (total_pedido, notas, usuario_id) 
+    VALUES (${total_pedido},'${notas}',${usuario_id})`;
 
-//   var query =
-//     "INSERT INTO producto_pedido (producto_id, pedido_id, cantidad) VALUES ?";
+connection.query(sql2, (err, result2)=>{
+    if(err)throw err;
+    res.send(result2);
 
-//   console.log(pedido_id);
-//   connection.query(query, [[producto_id,pedido_id,cantidad]], (error, result) => {
-//     if (error) throw error;
-//     res.send("Pedido guardado");
-//   });
+let pedido_id = result2.insertId;
+  let pedido = req.body.pedido;
+  pedido.forEach((element) => {
+    let sql = `INSERT INTO producto_pedido (producto_id, pedido_id, cantidad) 
+    VALUES (${element.producto_id},${pedido_id},${element.cantidad})`;
+    connection.query(sql, (err, result) => {
+      if (err) throw err;
+    });
+  });
+})
 };
 
 // pedidosController.eliminarPedido= (req, res) => {
