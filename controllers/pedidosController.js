@@ -1,35 +1,34 @@
-
-const connection = require('../config/db');
-
+const connection = require("../config/db");
 
 pedidosController = {};
 
-
 pedidosController.crearPedido = (req, res) => {
+  let estado_pago = req.body.estado_pago;
+  let forma_entrega = req.body.forma_entrega;
+  let iva = req.body.iva;
+  let total_pedido = req.body.total_pedido;
+  let estado_preparacion = req.body.estado_preparacion;
+  let fecha_pedido = req.body.fecha_pedido;
+  let notas = req.body.notas;
 
-let estado_pago=req.body.estado_pago;
-let forma_entrega=req.body.forma_entrega;
-let iva=req.body.iva;
-let total_pedido=req.body.total_pedido;
-let estado_preparacion=req.body.estado_preparacion;
-let fecha_pedido=req.body.fecha_pedido;
-let notas=req.body.notas;
-
-
-
-let sql = `INSERT INTO pedido (estado_pago,forma_entrega,iva,total_pedido,estado_preparacion,fecha_pedido,notas)
+  let sql = `INSERT INTO pedido (estado_pago,forma_entrega,iva,total_pedido,estado_preparacion,fecha_pedido,notas)
  VALUES ('${estado_pago}','${forma_entrega}','${iva}','${total_pedido}', '${estado_preparacion}','${fecha_pedido}','${notas}')`;
 
- connection.query( sql, (err, result)=>{
-     if(err) throw err;
-     res.json('Pedido creado');
- })
-
-  
-}
-
+  connection.query(sql, (err, result) => {
+    if (err) throw err;
+    res.json("Pedido creado");
+  });
+};
 
 pedidosController.listaPedidos = (req, res) => {
+  let sql = `select * from pedido`;
+
+
+  connection.query(sql, (err, result) => {
+    if (err) throw err;
+    res.json(result);
+  });
+};
 
     let sql=`SELECT * FROM pedido JOIN usuario ON usuario.usuario_id = pedido.usuario_id`;
 
@@ -77,45 +76,58 @@ pedidosController.buscarPedido= (req, res) => {
 
     let sql=`SELECT * FROM pedido where pedido_id= ${req.params.id}`;
 
-    connection.query(sql,(err,result)=>{
-        if(err) throw err;
-        res.json(result);
-    })
-}
+pedidosController.buscarPedido = (req, res) => {
+  let sql = `SELECT * FROM pedido where pedido_id= ${req.params.id}`;
 
+  connection.query(sql, (err, result) => {
+    if (err) throw err;
+    res.json(result);
+  });
+};
 
-pedidosController.modificarPedido= (req, res) => {
+pedidosController.modificarPedido = (req, res) => {
+  let pedido_id = req.params.id;
 
-    let pedido_id=req.params.id;
+  let estado_pago = req.body.estado_pago;
+  let forma_entrega = req.body.forma_entrega;
+  let iva = req.body.iva;
+  let total_pedido = req.body.total_pedido;
+  let estado_preparacion = req.body.estado_preparacion;
+  let fecha_pedido = req.body.fecha_pedido;
+  let notas = req.body.notas;
 
-    let estado_pago=req.body.estado_pago;
-    let forma_entrega=req.body.forma_entrega;
-    let iva=req.body.iva;
-    let total_pedido=req.body.total_pedido;
-    let estado_preparacion=req.body.estado_preparacion;
-    let fecha_pedido=req.body.fecha_pedido;
-    let notas=req.body.notas;
-   
-    let sql = `UPDATE pedido SET estado_pago ='${estado_pago}', forma_entrega='${forma_entrega}',
+  let sql = `UPDATE pedido SET estado_pago ='${estado_pago}', forma_entrega='${forma_entrega}',
      iva='${iva}', total_pedido='${total_pedido}', estado_preparacion='${estado_preparacion}', fecha_pedido='${fecha_pedido}',notas= '${notas}'
      WHERE pedido_id =${pedido_id}`;
 
-    connection.query(sql, (err, result) => {
-        if (err) throw err;
-        res.json('Pedido modificado')
-    })
-}
+  connection.query(sql, (err, result) => {
+    if (err) throw err;
+    res.json("Pedido modificado");
+  });
+};
 
+pedidosController.obtenerCantidad = (req, res) => {
+  let pedido_id = req.params.id;
 
-pedidosController.obtenerCantidad= (req, res) => {
-
-    let pedido_id=req.params.id;
-
-   
-    let sql = `select sum(cantidad) as cantidad from pedido P
+  let sql = `select sum(cantidad) as cantidad from pedido P
     inner join producto_pedido ON P.pedido_id = producto_pedido.pedido_id
     inner join producto ON producto_pedido.producto_id = producto.producto_id
     where P.pedido_id = ${pedido_id}`;
+  connection.query(sql, (err, result) => {
+    if (err) {
+      res.status(500).json({
+        message: err.message,
+      });
+    } else {
+      res.json(result);
+    }
+  });
+};
+
+pedidosController.obtenerResumen = (req, res) => {
+  let pedido_id = req.params.id;
+
+  let sql = `select sum(cantidad) as cantidad, P.estado_pago, P.forma_entrega, P.iva, P.total_pedido, P.estado_preparacion, P.fecha_pedido, P.notas from pedido P
 
     connection.query(sql, (err, result) => {
         if (err) {
@@ -135,12 +147,47 @@ pedidosController.obtenerDetalle= (req, res) => {
     let sql = `select sum(cantidad) as cantidad, P.estado_pago, P.forma_entrega, P.iva, P.total_pedido, P.estado_preparacion, P.fecha_pedido, P.notas , 
 	usuario.nombre, usuario.apellidos, usuario.email, usuario.registrado, usuario.suscriptor, usuario.usuario_id
     from pedido P
+
     inner join producto_pedido ON P.pedido_id = producto_pedido.pedido_id
     inner join producto ON producto_pedido.producto_id = producto.producto_id
     inner join usuario ON P.usuario_id = usuario.usuario_id
     where P.pedido_id = ${pedido_id}`;
 
+  connection.query(sql, (err, result) => {
+    if (err) {
+      res.status(500).json({
+        message: err.message,
+      });
+    } else {
+      res.json(result);
+    }
+  });
+};
+
+pedidosController.guardarPedido = (req, res) => {
+let total_pedido = req.body.total_pedido;
+let notas ="TODO"
+let usuario_id = req.body.usuario_id;
+let sql2 = `INSERT INTO pedido (total_pedido, notas, usuario_id) 
+    VALUES (${total_pedido},'${notas}',${usuario_id})`;
+
+connection.query(sql2, (err, result2)=>{
+    if(err)throw err;
+    res.send(result2);
+
+let pedido_id = result2.insertId;
+  let pedido = req.body.pedido;
+  pedido.forEach((element) => {
+    let sql = `INSERT INTO producto_pedido (producto_id, pedido_id, cantidad) 
+    VALUES (${element.producto_id},${pedido_id},${element.cantidad})`;
     connection.query(sql, (err, result) => {
+
+      if (err) throw err;
+    });
+  });
+})
+};
+
         if (err) {
             res.status(500).json({
                 message: err.message
@@ -183,7 +230,7 @@ pedidosController.obtenerProductosPedido= (req, res) => {
 //     let pedido_id= req.params.id;
 
 //         let sql = `DELETE FROM pedido WHERE pedido_id = ${pedido_id}`;
-        
+
 //         connection.query(sql, (err, result) => {
 //             if (err) throw err;
 //             res.send('Pedido Eliminado');
@@ -191,9 +238,4 @@ pedidosController.obtenerProductosPedido= (req, res) => {
 
 // }
 
-
-
-
-module.exports=pedidosController;
-
-
+module.exports = pedidosController;

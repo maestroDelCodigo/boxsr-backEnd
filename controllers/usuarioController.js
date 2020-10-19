@@ -99,6 +99,7 @@ usuarioController.buscarUsuario = (req, res) => {
       });
     }
     res.json(result[0]);
+    console.log(result)
   });
 };
 // Modificar datos de un usuario
