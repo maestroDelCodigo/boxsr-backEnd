@@ -14,10 +14,22 @@ const pedidosController = require('../controllers/pedidosController')
 
     router.get('/obtenerCantidad/:id', pedidosController.obtenerCantidad);
 
+
     router.get('/obtenerResumen/:id', pedidosController.obtenerResumen);
 
     router.post('/guardarPedido', pedidosController.guardarPedido)
+
+    router.get('/obtenerDetalle/:id', pedidosController.obtenerDetalle);
+
+    router.get('/obtenerProductosPedido/:id', pedidosController.obtenerProductosPedido);
     
     // router.post('/eliminarPedido/:id', pedidosController.eliminarPedido);
+    router.get('/listaPedidos', pedidosController.listaPedidos);
+
+    router.get('/detallePedido/:id', pedidosController.detallePedido);
+
+
+
+    router.post('/obtenerDetalle', pedidosController.obtenerDetalle);
 
     module.exports= router;

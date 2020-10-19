@@ -7,6 +7,7 @@ const payment = async (req, res, next) => {
       amount: req.body.totalPedido * 100,
       currency: 'eur',
       source: req.body.id,
+      receipt_email: req.body.receiptemail,
 
     });
 

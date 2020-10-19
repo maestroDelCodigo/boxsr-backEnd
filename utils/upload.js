@@ -11,7 +11,8 @@ let storage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     console.log(file.originalname);
-    cb(null, file.originalname);
+    let name = file.originalname.replace(/\s/g, '');
+    cb(null, name);
   },
 });
 
