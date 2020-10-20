@@ -21,21 +21,20 @@ pedidosController.crearPedido = (req, res) => {
 };
 
 pedidosController.listaPedidos = (req, res) => {
-  let sql = `select * from pedido`;
+//   let sql = `select * from pedido`;
 
 
-  connection.query(sql, (err, result) => {
-    if (err) throw err;
-    res.json(result);
-  });
-};
+ //   connection.query(sql, (err, result) => {
+ //     if (err) throw err;
+ //     res.json(result);
+ //   });
+ // };
 
     let sql=`SELECT * FROM pedido JOIN usuario ON usuario.usuario_id = pedido.usuario_id`;
 
     connection.query(sql ,(err,result) => {
     if(err) throw err;
     res.json(result);
-    //console.log(result)
     }) 
 }
 pedidosController.obtenerDetalle= (req, res) => {
@@ -72,9 +71,7 @@ pedidosController.detallePedido= (req, res) => {
     })
 }
 
-pedidosController.buscarPedido= (req, res) => {
 
-    let sql=`SELECT * FROM pedido where pedido_id= ${req.params.id}`;
 
 pedidosController.buscarPedido = (req, res) => {
   let sql = `SELECT * FROM pedido where pedido_id= ${req.params.id}`;
@@ -83,8 +80,8 @@ pedidosController.buscarPedido = (req, res) => {
     if (err) throw err;
     res.json(result);
   });
-};
 
+}
 pedidosController.modificarPedido = (req, res) => {
   let pedido_id = req.params.id;
 
@@ -105,6 +102,7 @@ pedidosController.modificarPedido = (req, res) => {
     res.json("Pedido modificado");
   });
 };
+
 
 pedidosController.obtenerCantidad = (req, res) => {
   let pedido_id = req.params.id;
@@ -127,7 +125,7 @@ pedidosController.obtenerCantidad = (req, res) => {
 pedidosController.obtenerResumen = (req, res) => {
   let pedido_id = req.params.id;
 
-  let sql = `select sum(cantidad) as cantidad, P.estado_pago, P.forma_entrega, P.iva, P.total_pedido, P.estado_preparacion, P.fecha_pedido, P.notas from pedido P
+  let sql = `select sum(cantidad) as cantidad, P.estado_pago, P.forma_entrega, P.iva, P.total_pedido, P.estado_preparacion, P.fecha_pedido, P.notas from pedido P`
 
     connection.query(sql, (err, result) => {
         if (err) {
@@ -140,6 +138,7 @@ pedidosController.obtenerResumen = (req, res) => {
         }
     })
 }
+
 
 pedidosController.obtenerDetalle= (req, res) => {
     let pedido_id=req.params.id;    
@@ -188,17 +187,6 @@ let pedido_id = result2.insertId;
 })
 };
 
-        if (err) {
-            res.status(500).json({
-                message: err.message
-            });
-        }
-        else{
-            res.json(result);
-        }
-    })
-}
-
 pedidosController.obtenerProductosPedido= (req, res) => {
     let pedido_id=req.params.id;    
 
@@ -237,5 +225,6 @@ pedidosController.obtenerProductosPedido= (req, res) => {
 //         })
 
 // }
+
 
 module.exports = pedidosController;
