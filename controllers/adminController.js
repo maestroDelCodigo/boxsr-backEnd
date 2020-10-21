@@ -15,7 +15,6 @@ adminController.crearAdmin = (req, res) => {
   "-" +
   parseInt(date.getMonth() + 1) +
   "-" +
-  0 +
   date.getDate() +
   "%";
   
@@ -70,8 +69,13 @@ adminController.ventasMensuales = (req, res) => {
   var date = new Date();
   var fechaMensual =
     date.getFullYear() + "-" + parseInt(date.getMonth() + 1) + "%";
+    console.log(fechaMensual)
 
-  let sql = `SELECT total_pedido FROM pedido WHERE estado_pago = 'pagado' AND 
+<<<<<<< Updated upstream
+  let sql = `SELECT total_pedido FROM pedido WHERE  
+=======
+  let sql = `SELECT total_pedido FROM pedido WHERE
+>>>>>>> Stashed changes
 fecha_pedido LIKE '${fechaMensual}'  `;
 
   connection.query(sql, (err, result) => {
@@ -88,12 +92,21 @@ adminController.ventasDiarias = (req, res) => {
     "-" +
     parseInt(date.getMonth() + 1) +
     "-" +
-    0 +
+<<<<<<< Updated upstream
     date.getDate() +
     "%";
     
-  let sql = `SELECT total_pedido FROM pedido WHERE estado_pago = 'pagado' AND 
+  let sql = `SELECT total_pedido FROM pedido WHERE
 fecha_pedido LIKE '${fechaDiaria}'  `;
+=======
+    
+    date.getDate() +
+    "%";
+    
+  let sql = `SELECT total_pedido FROM pedido WHERE 
+fecha_pedido LIKE '${fechaDiaria}'`;
+
+>>>>>>> Stashed changes
 
   connection.query(sql, (err, result) => {
     if (err) throw err;
@@ -110,18 +123,6 @@ adminController.unAdmin = (req, res) => {
     res.json(result)
   })
 }
-
-
-
-// adminController.unAdmin = (req, res) => {
-//   let usuario_id = req.params.usuario_id
-//   let sql = `SELECT * FROM usuario WHERE usuario_id = ${usuario_id}`
-
-//   connection.query(sql, (err, result)=>{
-//     if(err)throw err;
-//     res.json(result)
-//   });
-
   adminController.desactivarAdmin = (req, res) => {
     let usuario_id = req.params.id;
     let desactivarAdmin = req.body.deleted;
