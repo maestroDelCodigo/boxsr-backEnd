@@ -15,7 +15,6 @@ adminController.crearAdmin = (req, res) => {
   "-" +
   parseInt(date.getMonth() + 1) +
   "-" +
-  0 +
   date.getDate() +
   "%";
   
@@ -71,7 +70,7 @@ adminController.ventasMensuales = (req, res) => {
   var fechaMensual =
     date.getFullYear() + "-" + parseInt(date.getMonth() + 1) + "%";
 
-  let sql = `SELECT total_pedido FROM pedido WHERE estado_pago = 'pagado' AND 
+  let sql = `SELECT total_pedido FROM pedido WHERE  
 fecha_pedido LIKE '${fechaMensual}'  `;
 
   connection.query(sql, (err, result) => {
@@ -88,11 +87,10 @@ adminController.ventasDiarias = (req, res) => {
     "-" +
     parseInt(date.getMonth() + 1) +
     "-" +
-    0 +
     date.getDate() +
     "%";
     
-  let sql = `SELECT total_pedido FROM pedido WHERE estado_pago = 'pagado' AND 
+  let sql = `SELECT total_pedido FROM pedido WHERE
 fecha_pedido LIKE '${fechaDiaria}'  `;
 
   connection.query(sql, (err, result) => {
