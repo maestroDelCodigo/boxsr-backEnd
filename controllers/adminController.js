@@ -12,18 +12,18 @@ adminController.crearAdmin = (req, res) => {
   // let deleted = req.body.deleted;
   let rol = "Admin";
   let fecha_creacion = date.getFullYear() +
-  "-" +
-  parseInt(date.getMonth() + 1) +
-  "-" +
-  date.getDate() +
-  "%";
-  
+    "-" +
+    parseInt(date.getMonth() + 1) +
+    "-" +
+    date.getDate() +
+    "%";
+
   let sql = `INSERT INTO usuario (nombre, apellidos, email, password, fecha_creacion, rol)
   VALUES ('${nombre}','${apellidos}','${email}','${password}', '${fecha_creacion}', '${rol}')`;
 
   connection.query(sql, (err, result) => {
     if (err) throw err;
-    res.json(result);    
+    res.json(result);
 
   });
 };
@@ -53,7 +53,7 @@ adminController.modificarAdmin = (req, res) => {
   let apellidos = req.body.apellidos;
   let email = req.body.email;
   let password = req.body.password;
- 
+
 
   let sql = `UPDATE usuario SET nombre ='${nombre}', apellidos='${apellidos}', email='${email}',password='${password}' 
   WHERE usuario_id = ${usuario_id}`;
@@ -69,13 +69,9 @@ adminController.ventasMensuales = (req, res) => {
   var date = new Date();
   var fechaMensual =
     date.getFullYear() + "-" + parseInt(date.getMonth() + 1) + "%";
-    console.log(fechaMensual)
+  console.log(fechaMensual)
 
-<<<<<<< Updated upstream
   let sql = `SELECT total_pedido FROM pedido WHERE  
-=======
-  let sql = `SELECT total_pedido FROM pedido WHERE
->>>>>>> Stashed changes
 fecha_pedido LIKE '${fechaMensual}'  `;
 
   connection.query(sql, (err, result) => {
@@ -92,21 +88,13 @@ adminController.ventasDiarias = (req, res) => {
     "-" +
     parseInt(date.getMonth() + 1) +
     "-" +
-<<<<<<< Updated upstream
+
     date.getDate() +
     "%";
-    
+
   let sql = `SELECT total_pedido FROM pedido WHERE
-fecha_pedido LIKE '${fechaDiaria}'  `;
-=======
-    
-    date.getDate() +
-    "%";
-    
-  let sql = `SELECT total_pedido FROM pedido WHERE 
 fecha_pedido LIKE '${fechaDiaria}'`;
 
->>>>>>> Stashed changes
 
   connection.query(sql, (err, result) => {
     if (err) throw err;
@@ -118,34 +106,34 @@ adminController.unAdmin = (req, res) => {
   let usuario_id = req.params.usuario_id
   let sql = `SELECT * FROM usuario WHERE usuario_id = ${usuario_id}`
 
-  connection.query(sql, (err, result)=>{
-    if(err)throw err;
+  connection.query(sql, (err, result) => {
+    if (err) throw err;
     res.json(result)
   })
 }
-  adminController.desactivarAdmin = (req, res) => {
-    let usuario_id = req.params.id;
-    let desactivarAdmin = req.body.deleted;
-        if (desactivarAdmin == false){
-            let sql = `UPDATE  usuario  SET deleted = 0
+adminController.desactivarAdmin = (req, res) => {
+  let usuario_id = req.params.id;
+  let desactivarAdmin = req.body.deleted;
+  if (desactivarAdmin == false) {
+    let sql = `UPDATE  usuario  SET deleted = 0
             WHERE usuario_id=' ${usuario_id}'`
-            connection.query(sql, (err, result) => {
-                  if (err) throw err;
-        res.json('Admin activo');
-            }) 
-           
-        }
-        else{
-            let sql = `UPDATE  usuario  SET deleted = 1
+    connection.query(sql, (err, result) => {
+      if (err) throw err;
+      res.json('Admin activo');
+    })
+
+  }
+  else {
+    let sql = `UPDATE  usuario  SET deleted = 1
           WHERE usuario_id= '${usuario_id}'`
-          connection.query(sql, (err, result) => {
-            if (err) throw err;
-        res.json('Admin inactivo');
-            })
-           
-        }
- 
- }
+    connection.query(sql, (err, result) => {
+      if (err) throw err;
+      res.json('Admin inactivo');
+    })
+
+  }
+
+}
 
 
 module.exports = adminController;
